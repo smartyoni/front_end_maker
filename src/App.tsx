@@ -9,7 +9,7 @@ export function App() {
   const [isExportOpen, setIsExportOpen] = useState(false);
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-slate-950 font-sans">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-slate-100 font-sans text-slate-800">
       {/* 상단 툴바 */}
       <TopBar onOpenExport={() => setIsExportOpen(true)} />
 

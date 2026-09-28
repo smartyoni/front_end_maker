@@ -7,15 +7,15 @@ export const LeftSidebar: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'palette' | 'tree'>('palette');
 
   return (
-    <aside className="w-72 bg-slate-900 border-r border-slate-800 flex flex-col h-full shrink-0 z-10">
+    <aside className="w-72 bg-white border-r border-slate-200 flex flex-col h-full shrink-0 z-10 shadow-sm">
       {/* 탭 헤더 */}
-      <div className="flex border-b border-slate-800">
+      <div className="flex border-b border-slate-200 bg-slate-50/50">
         <button
           onClick={() => setActiveTab('palette')}
           className={`flex-1 py-3 flex items-center justify-center gap-1.5 text-xs font-semibold border-b-2 transition ${
             activeTab === 'palette'
-              ? 'border-blue-500 text-blue-400 bg-slate-800/40'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'border-blue-600 text-blue-600 bg-white'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
           <PlusCircle className="w-3.5 h-3.5" />
@@ -25,8 +25,8 @@ export const LeftSidebar: React.FC = () => {
           onClick={() => setActiveTab('tree')}
           className={`flex-1 py-3 flex items-center justify-center gap-1.5 text-xs font-semibold border-b-2 transition ${
             activeTab === 'tree'
-              ? 'border-blue-500 text-blue-400 bg-slate-800/40'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'border-blue-600 text-blue-600 bg-white'
+              : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
           <Layers className="w-3.5 h-3.5" />

@@ -58,7 +58,7 @@ function renderComponentContent(comp: ComponentItem) {
       return (
         <div className="flex items-center justify-between">
           <span className="font-bold text-base">{comp.label || 'Header'}</span>
-          <div className="w-5 h-5 rounded-full bg-slate-700/60 flex items-center justify-center text-[10px]">
+          <div className="w-5 h-5 rounded-full bg-black/10 flex items-center justify-center text-[10px] text-slate-700">
             ☰
           </div>
         </div>
@@ -67,11 +67,11 @@ function renderComponentContent(comp: ComponentItem) {
     case 'button':
       return (
         <button
-          className={`w-full py-2.5 px-4 text-center font-medium rounded-lg transition ${
+          className={`w-full py-2.5 px-4 text-center font-semibold rounded-lg transition ${
             comp.variant === 'primary' ? 'shadow-md shadow-blue-500/20' : ''
           }`}
           style={{
-            backgroundColor: comp.styles?.backgroundColor || '#3b82f6',
+            backgroundColor: comp.styles?.backgroundColor || '#2563eb',
             color: comp.styles?.textColor || '#ffffff',
           }}
         >
@@ -82,8 +82,8 @@ function renderComponentContent(comp: ComponentItem) {
     case 'input':
       return (
         <div className="space-y-1 w-full">
-          {comp.label && <div className="text-xs font-medium text-slate-400">{comp.label}</div>}
-          <div className="px-3.5 py-2.5 bg-slate-800/80 border border-slate-700/70 rounded-xl text-xs text-slate-400">
+          {comp.label && <div className="text-xs font-semibold text-slate-700">{comp.label}</div>}
+          <div className="px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-400 shadow-sm">
             {comp.placeholder || '입력하세요...'}
           </div>
         </div>
@@ -92,19 +92,19 @@ function renderComponentContent(comp: ComponentItem) {
     case 'card':
       return (
         <div className="space-y-1.5">
-          <h4 className="font-semibold text-sm text-slate-100">{comp.label || '카드 제목'}</h4>
-          <p className="text-xs text-slate-400 leading-relaxed">{comp.content || '카드 설명 내용입니다.'}</p>
+          <h4 className="font-bold text-sm text-slate-800">{comp.label || '카드 제목'}</h4>
+          <p className="text-xs text-slate-600 leading-relaxed">{comp.content || '카드 설명 내용입니다.'}</p>
         </div>
       );
 
     case 'tabs':
       return (
-        <div className="flex border-b border-slate-700/60 text-xs">
+        <div className="flex border-b border-slate-200 text-xs">
           {(comp.items || ['탭 1', '탭 2']).map((tab, idx) => (
             <div
               key={idx}
-              className={`flex-1 py-2 text-center font-medium ${
-                idx === 0 ? 'text-blue-400 border-b-2 border-blue-500' : 'text-slate-400'
+              className={`flex-1 py-2 text-center font-semibold ${
+                idx === 0 ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-500'
               }`}
             >
               {tab}
@@ -115,11 +115,11 @@ function renderComponentContent(comp: ComponentItem) {
 
     case 'list':
       return (
-        <div className="divide-y divide-slate-700/40">
+        <div className="divide-y divide-slate-200">
           {(comp.items || ['항목 1', '항목 2']).map((item, idx) => (
-            <div key={idx} className="py-2 px-1 text-xs flex items-center justify-between text-slate-300">
-              <span>{item}</span>
-              <span className="text-slate-500">›</span>
+            <div key={idx} className="py-2.5 px-2 text-xs flex items-center justify-between text-slate-700">
+              <span className="font-medium">{item}</span>
+              <span className="text-slate-400">›</span>
             </div>
           ))}
         </div>
@@ -127,10 +127,10 @@ function renderComponentContent(comp: ComponentItem) {
 
     case 'bottomNav':
       return (
-        <div className="flex items-center justify-around text-[11px] text-slate-400 pt-1">
+        <div className="flex items-center justify-around text-[11px] text-slate-500 pt-1">
           {(comp.items || ['홈', '검색', '설정']).map((item, idx) => (
-            <div key={idx} className={`flex flex-col items-center ${idx === 0 ? 'text-blue-400 font-bold' : ''}`}>
-              <span className="w-2 h-2 rounded-full mb-1 bg-current opacity-70" />
+            <div key={idx} className={`flex flex-col items-center ${idx === 0 ? 'text-blue-600 font-bold' : ''}`}>
+              <span className="w-1.5 h-1.5 rounded-full mb-1 bg-current" />
               <span>{item}</span>
             </div>
           ))}
@@ -140,7 +140,7 @@ function renderComponentContent(comp: ComponentItem) {
     case 'switch':
       return (
         <div className="flex items-center justify-between py-1">
-          <span className="text-xs text-slate-200">{comp.label || '스위치 설정'}</span>
+          <span className="text-xs font-semibold text-slate-700">{comp.label || '스위치 설정'}</span>
           <div className="w-9 h-5 bg-blue-600 rounded-full flex items-center px-0.5 justify-end">
             <div className="w-4 h-4 bg-white rounded-full shadow" />
           </div>
@@ -148,6 +148,6 @@ function renderComponentContent(comp: ComponentItem) {
       );
 
     default:
-      return <div className="p-2 text-xs">{comp.label || comp.name}</div>;
+      return <div className="p-2 text-xs text-slate-700">{comp.label || comp.name}</div>;
   }
 }

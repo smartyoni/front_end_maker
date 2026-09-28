@@ -29,12 +29,12 @@ export const LayerTree: React.FC = () => {
             onClick={() => selectComponent(comp.id)}
             className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs transition cursor-pointer group ${
               isSelected
-                ? 'bg-blue-600/20 border border-blue-500/50 text-blue-200'
-                : 'bg-slate-800/60 hover:bg-slate-800 border border-transparent text-slate-300'
+                ? 'bg-blue-50 border border-blue-400 text-blue-900 shadow-sm font-medium'
+                : 'bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700'
             }`}
           >
             <div className="flex items-center gap-2 truncate">
-              <span className="text-[10px] text-slate-500 font-mono w-4">{idx + 1}</span>
+              <span className="text-[10px] text-slate-400 font-mono w-4">{idx + 1}</span>
               <span className="truncate font-medium">{comp.name || comp.label || comp.type}</span>
             </div>
 
@@ -45,7 +45,7 @@ export const LayerTree: React.FC = () => {
                   e.stopPropagation();
                   moveComponent(comp.id, 'up');
                 }}
-                className="p-1 text-slate-400 hover:text-white disabled:opacity-20"
+                className="p-1 text-slate-400 hover:text-slate-800 disabled:opacity-20"
                 title="위로 이동"
               >
                 <ChevronUp className="w-3.5 h-3.5" />
@@ -56,7 +56,7 @@ export const LayerTree: React.FC = () => {
                   e.stopPropagation();
                   moveComponent(comp.id, 'down');
                 }}
-                className="p-1 text-slate-400 hover:text-white disabled:opacity-20"
+                className="p-1 text-slate-400 hover:text-slate-800 disabled:opacity-20"
                 title="아래로 이동"
               >
                 <ChevronDown className="w-3.5 h-3.5" />
@@ -66,7 +66,7 @@ export const LayerTree: React.FC = () => {
                   e.stopPropagation();
                   deleteComponent(comp.id);
                 }}
-                className="p-1 text-slate-400 hover:text-red-400"
+                className="p-1 text-slate-400 hover:text-red-500"
                 title="삭제"
               >
                 <Trash2 className="w-3.5 h-3.5" />

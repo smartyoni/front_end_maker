@@ -27,18 +27,18 @@ export const PropertyInspector: React.FC = () => {
   return (
     <div className="flex-1 overflow-y-auto p-4 space-y-4">
       {/* 컴포넌트 기본 정보 헤더 */}
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+      <div className="flex items-center justify-between pb-3 border-b border-slate-200">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">
             {selectedComponent.type}
           </span>
-          <h3 className="text-sm font-bold text-white truncate max-w-[170px]">
+          <h3 className="text-sm font-bold text-slate-800 truncate max-w-[170px]">
             {selectedComponent.name || selectedComponent.label}
           </h3>
         </div>
         <button
           onClick={() => deleteComponent(selectedComponent.id)}
-          className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800 transition"
+          className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-slate-100 transition"
           title="컴포넌트 삭제"
         >
           <Trash2 className="w-4 h-4" />
@@ -49,36 +49,36 @@ export const PropertyInspector: React.FC = () => {
       <div className="space-y-3">
         {selectedComponent.label !== undefined && (
           <div>
-            <label className="text-xs text-slate-400 block mb-1">라벨 / 텍스트</label>
+            <label className="text-xs font-semibold text-slate-600 block mb-1">라벨 / 텍스트</label>
             <input
               type="text"
               value={selectedComponent.label}
               onChange={(e) => handleUpdate({ label: e.target.value })}
-              className="w-full px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+              className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition"
             />
           </div>
         )}
 
         {selectedComponent.placeholder !== undefined && (
           <div>
-            <label className="text-xs text-slate-400 block mb-1">플레이스홀더 안내문</label>
+            <label className="text-xs font-semibold text-slate-600 block mb-1">플레이스홀더 안내문</label>
             <input
               type="text"
               value={selectedComponent.placeholder}
               onChange={(e) => handleUpdate({ placeholder: e.target.value })}
-              className="w-full px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs text-slate-200"
+              className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition"
             />
           </div>
         )}
 
         {selectedComponent.content !== undefined && (
           <div>
-            <label className="text-xs text-slate-400 block mb-1">본문 설명 문구</label>
+            <label className="text-xs font-semibold text-slate-600 block mb-1">본문 설명 문구</label>
             <textarea
               rows={3}
               value={selectedComponent.content}
               onChange={(e) => handleUpdate({ content: e.target.value })}
-              className="w-full px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs text-slate-200 resize-none"
+              className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white resize-none transition"
             />
           </div>
         )}
@@ -86,7 +86,7 @@ export const PropertyInspector: React.FC = () => {
         {/* 탭/목록 아이템 쉼표 구분 편집 */}
         {selectedComponent.items !== undefined && (
           <div>
-            <label className="text-xs text-slate-400 block mb-1">하위 항목 (쉼표로 구분)</label>
+            <label className="text-xs font-semibold text-slate-600 block mb-1">하위 항목 (쉼표로 구분)</label>
             <input
               type="text"
               value={selectedComponent.items.join(', ')}
@@ -95,7 +95,7 @@ export const PropertyInspector: React.FC = () => {
                   items: e.target.value.split(',').map((s) => s.trim()).filter(Boolean),
                 })
               }
-              className="w-full px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs text-slate-200"
+              className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition"
             />
           </div>
         )}

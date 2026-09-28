@@ -13,18 +13,18 @@ export const CanvasArea: React.FC = () => {
   return (
     <main
       onClick={() => selectComponent(null)}
-      className="flex-1 bg-slate-950 overflow-auto flex items-center justify-center p-8 relative"
+      className="flex-1 bg-slate-100 overflow-auto flex items-center justify-center p-8 relative"
       style={{
-        backgroundImage: 'radial-gradient(circle, #1e293b 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
+        backgroundImage: 'radial-gradient(circle, #cbd5e1 1.2px, transparent 1.2px)',
+        backgroundSize: '20px 20px',
       }}
     >
       <DeviceFrame mode={viewportMode}>
         {components.length === 0 ? (
-          <div className="h-64 flex flex-col items-center justify-center text-center text-slate-500 border-2 border-dashed border-slate-800 rounded-2xl p-6">
-            <Layers className="w-10 h-10 mb-3 opacity-40 text-blue-400" />
-            <p className="text-sm font-medium text-slate-400">화면에 배치된 요소가 없습니다</p>
-            <p className="text-xs text-slate-600 mt-1 max-w-[200px]">
+          <div className="h-64 flex flex-col items-center justify-center text-center text-slate-400 border-2 border-dashed border-slate-300 rounded-2xl p-6">
+            <Layers className="w-10 h-10 mb-3 opacity-40 text-blue-500" />
+            <p className="text-sm font-semibold text-slate-600">화면에 배치된 요소가 없습니다</p>
+            <p className="text-xs text-slate-500 mt-1 max-w-[200px]">
               좌측 도구함에서 컴포넌트를 클릭하여 원하는 레이아웃을 구성해 보세요.
             </p>
           </div>

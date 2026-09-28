@@ -141,54 +141,54 @@ export const ComponentPalette: React.FC = () => {
   return (
     <div className="flex-1 overflow-y-auto p-3 space-y-4">
       <div>
-        <h3 className="text-xs font-semibold text-slate-400 mb-2 px-1">레이아웃 & 네비게이션</h3>
+        <h3 className="text-xs font-bold text-slate-500 mb-2 px-1 uppercase tracking-wider">레이아웃 & 네비게이션</h3>
         <div className="grid grid-cols-2 gap-2">
           {PALETTE_ITEMS.filter((i) => i.category === 'layout').map((item) => (
             <button
               key={item.title}
               onClick={() => addComponent(item.defaultData)}
-              className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/50 hover:border-blue-500/50 transition-all text-slate-200 group"
+              className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-blue-400 hover:shadow-sm transition-all text-slate-700 group"
             >
-              <div className="p-2 rounded-lg bg-slate-900 group-hover:scale-110 transition-transform mb-1.5">
+              <div className="p-2 rounded-lg bg-white border border-slate-200 group-hover:scale-110 shadow-sm transition-transform mb-1.5">
                 {item.icon}
               </div>
-              <span className="text-xs font-medium">{item.title}</span>
+              <span className="text-xs font-semibold">{item.title}</span>
             </button>
           ))}
         </div>
       </div>
 
       <div>
-        <h3 className="text-xs font-semibold text-slate-400 mb-2 px-1">기본 UI 요소</h3>
+        <h3 className="text-xs font-bold text-slate-500 mb-2 px-1 uppercase tracking-wider">기본 UI 요소</h3>
         <div className="grid grid-cols-2 gap-2">
           {PALETTE_ITEMS.filter((i) => i.category === 'basic').map((item) => (
             <button
               key={item.title}
               onClick={() => addComponent(item.defaultData)}
-              className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/50 hover:border-blue-500/50 transition-all text-slate-200 group"
+              className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-blue-400 hover:shadow-sm transition-all text-slate-700 group"
             >
-              <div className="p-2 rounded-lg bg-slate-900 group-hover:scale-110 transition-transform mb-1.5">
+              <div className="p-2 rounded-lg bg-white border border-slate-200 group-hover:scale-110 shadow-sm transition-transform mb-1.5">
                 {item.icon}
               </div>
-              <span className="text-xs font-medium">{item.title}</span>
+              <span className="text-xs font-semibold">{item.title}</span>
             </button>
           ))}
         </div>
       </div>
 
       <div>
-        <h3 className="text-xs font-semibold text-slate-400 mb-2 px-1">컨텐츠 블록</h3>
+        <h3 className="text-xs font-bold text-slate-500 mb-2 px-1 uppercase tracking-wider">컨텐츠 블록</h3>
         <div className="grid grid-cols-2 gap-2">
           {PALETTE_ITEMS.filter((i) => i.category === 'content').map((item) => (
             <button
               key={item.title}
               onClick={() => addComponent(item.defaultData)}
-              className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/50 hover:border-blue-500/50 transition-all text-slate-200 group"
+              className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-blue-400 hover:shadow-sm transition-all text-slate-700 group"
             >
-              <div className="p-2 rounded-lg bg-slate-900 group-hover:scale-110 transition-transform mb-1.5">
+              <div className="p-2 rounded-lg bg-white border border-slate-200 group-hover:scale-110 shadow-sm transition-transform mb-1.5">
                 {item.icon}
               </div>
-              <span className="text-xs font-medium">{item.title}</span>
+              <span className="text-xs font-semibold">{item.title}</span>
             </button>
           ))}
         </div>

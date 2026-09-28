@@ -31,19 +31,19 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
   };
 
   return (
-    <header className="h-14 bg-slate-900 border-b border-slate-800 px-4 flex items-center justify-between z-20 shrink-0">
+    <header className="h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between z-20 shrink-0 shadow-sm">
       {/* 로고 & 화면 탭 */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-white shadow-md shadow-blue-500/20">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center font-bold text-white shadow-md shadow-blue-500/20">
             UI
           </div>
-          <span className="font-bold text-sm tracking-wide bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent hidden sm:inline">
+          <span className="font-bold text-sm tracking-wide bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent hidden sm:inline">
             AppCanvas
           </span>
         </div>
 
-        <div className="h-5 w-px bg-slate-800" />
+        <div className="h-5 w-px bg-slate-200" />
 
         {/* 화면 탭 목록 */}
         <div className="flex items-center gap-1.5 overflow-x-auto max-w-md py-1">
@@ -55,14 +55,14 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
                 className={`group flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                   isActive
                     ? 'bg-blue-600 text-white shadow-sm'
-                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800 hover:text-white'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                 }`}
                 onClick={() => setActiveScreen(screen.id)}
               >
                 <span>{screen.name}</span>
                 {screens.length > 1 && (
                   <button
-                    className="opacity-0 group-hover:opacity-100 hover:text-red-300 transition-opacity ml-1"
+                    className="opacity-0 group-hover:opacity-100 hover:text-red-200 transition-opacity ml-1"
                     onClick={(e) => {
                       e.stopPropagation();
                       if (confirm(`'${screen.name}' 화면을 삭제하시겠습니까?`)) {
@@ -79,7 +79,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
 
           <button
             onClick={handleAddScreen}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors border border-dashed border-slate-700 hover:border-slate-500"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors border border-dashed border-slate-300 hover:border-slate-400"
             title="새 화면 추가"
           >
             <Plus className="w-3.5 h-3.5" />
@@ -90,11 +90,11 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
 
       {/* 중앙: 뷰포트 전환 & Undo/Redo */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center bg-slate-800/80 p-0.5 rounded-lg border border-slate-700/60">
+        <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200">
           <button
             onClick={() => setViewportMode('mobile')}
             className={`p-1.5 rounded-md transition-colors ${
-              viewportMode === 'mobile' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+              viewportMode === 'mobile' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'
             }`}
             title="모바일 뷰 (375px)"
           >
@@ -103,7 +103,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
           <button
             onClick={() => setViewportMode('tablet')}
             className={`p-1.5 rounded-md transition-colors ${
-              viewportMode === 'tablet' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+              viewportMode === 'tablet' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'
             }`}
             title="태블릿 뷰 (768px)"
           >
@@ -112,7 +112,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
           <button
             onClick={() => setViewportMode('desktop')}
             className={`p-1.5 rounded-md transition-colors ${
-              viewportMode === 'desktop' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+              viewportMode === 'desktop' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'
             }`}
             title="데스크톱/웹 뷰 (1024px)"
           >
@@ -124,7 +124,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
           <button
             onClick={undo}
             disabled={history.length === 0}
-            className="p-1.5 rounded-md text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 transition"
+            className="p-1.5 rounded-md text-slate-500 hover:text-slate-900 disabled:opacity-30 transition"
             title="실행 취소"
           >
             <Undo2 className="w-4 h-4" />
@@ -132,7 +132,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
           <button
             onClick={redo}
             disabled={future.length === 0}
-            className="p-1.5 rounded-md text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 transition"
+            className="p-1.5 rounded-md text-slate-500 hover:text-slate-900 disabled:opacity-30 transition"
             title="다시 실행"
           >
             <Redo2 className="w-4 h-4" />
@@ -146,8 +146,8 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
           onClick={togglePreviewMode}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
             isPreviewMode
-              ? 'bg-amber-600 hover:bg-amber-500 text-white'
-              : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700'
+              ? 'bg-amber-500 hover:bg-amber-600 text-white'
+              : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'
           }`}
         >
           {isPreviewMode ? <EyeOff className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
@@ -156,7 +156,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
 
         <button
           onClick={onOpenExport}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-sm shadow-blue-600/30 transition"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-600/20 transition"
         >
           <Code className="w-3.5 h-3.5" />
           <span>코드 내보내기</span>
