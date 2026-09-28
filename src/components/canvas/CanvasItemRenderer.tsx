@@ -147,6 +147,107 @@ function renderComponentContent(comp: ComponentItem) {
         </div>
       );
 
+    case 'colorBlock':
+      return (
+        <div className="w-full rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-white">
+          <div
+            className="px-3.5 py-2 text-white text-xs font-bold flex items-center justify-between"
+            style={{ backgroundColor: comp.headerColor || '#9333ea' }}
+          >
+            <span>{comp.label || '섹션 블록'}</span>
+            <span className="text-[10px] opacity-80">⋮</span>
+          </div>
+          <div className="p-3 text-xs text-slate-700 whitespace-pre-line leading-relaxed font-sans">
+            {comp.content || '내용을 입력하세요.'}
+          </div>
+        </div>
+      );
+
+    case 'chipGroup':
+      return (
+        <div className="flex flex-wrap gap-1.5 p-1">
+          {(comp.items || ['메뉴1', '메뉴2']).map((chip, idx) => {
+            const colors = [
+              'bg-amber-100 text-amber-800 border-amber-300',
+              'bg-emerald-100 text-emerald-800 border-emerald-300',
+              'bg-blue-100 text-blue-800 border-blue-300',
+              'bg-purple-100 text-purple-800 border-purple-300',
+              'bg-pink-100 text-pink-800 border-pink-300',
+              'bg-teal-100 text-teal-800 border-teal-300',
+            ];
+            const colorClass = colors[idx % colors.length];
+            return (
+              <span
+                key={idx}
+                className={`px-2.5 py-1 rounded-md text-[11px] font-semibold border shadow-xs ${colorClass}`}
+              >
+                {chip}
+              </span>
+            );
+          })}
+        </div>
+      );
+
+    case 'categoryList':
+      return (
+        <div className="w-full space-y-1">
+          {comp.label && (
+            <div className="flex items-center justify-between text-xs font-bold text-slate-700 pb-1 mb-1 border-b border-slate-200">
+              <span>{comp.label}</span>
+              <span className="text-blue-600 cursor-pointer">+</span>
+            </div>
+          )}
+          <div className="space-y-0.5">
+            {(comp.items || ['카테고리 1']).map((item, idx) => (
+              <div
+                key={idx}
+                className={`px-2 py-1.5 rounded-lg text-xs flex items-center justify-between hover:bg-slate-100 cursor-pointer ${
+                  idx === 0 ? 'bg-blue-50 text-blue-800 font-semibold' : 'text-slate-700'
+                }`}
+              >
+                <span>› {item}</span>
+                <span className="text-[10px] text-slate-400">⋮</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+
+    case 'checklist':
+      return (
+        <div className="w-full rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-white">
+          <div
+            className="px-3.5 py-2 text-white text-xs font-bold flex items-center justify-between"
+            style={{ backgroundColor: comp.headerColor || '#16a34a' }}
+          >
+            <span>{comp.label || '체크리스트'}</span>
+            <span className="text-xs font-bold cursor-pointer">+ 항목 추가</span>
+          </div>
+          <div className="p-2 divide-y divide-slate-100">
+            {(comp.items || ['체크 항목 1']).map((item, idx) => (
+              <label key={idx} className="flex items-center gap-2 py-2 px-1 text-xs text-slate-700 cursor-pointer">
+                <input type="checkbox" defaultChecked={idx === 0} className="rounded text-emerald-600 cursor-pointer" />
+                <span className={idx === 0 ? 'line-through text-slate-400' : ''}>{item}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      );
+
+    case 'quickInput':
+      return (
+        <div className="flex items-center gap-1.5 w-full">
+          <input
+            type="text"
+            placeholder={comp.placeholder || '입력...'}
+            className="flex-1 px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:border-blue-500 shadow-sm"
+          />
+          <button className="px-3 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm whitespace-nowrap">
+            {comp.label || '+ 추가'}
+          </button>
+        </div>
+      );
+
     default:
       return <div className="p-2 text-xs text-slate-700">{comp.label || comp.name}</div>;
   }

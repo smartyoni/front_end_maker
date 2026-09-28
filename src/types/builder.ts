@@ -12,7 +12,12 @@ export type ComponentType =
   | 'avatar'
   | 'tabs'
   | 'list'
-  | 'switch';
+  | 'switch'
+  | 'colorBlock'
+  | 'chipGroup'
+  | 'categoryList'
+  | 'checklist'
+  | 'quickInput';
 
 export type ActionType = 'navigate' | 'openModal' | 'toast' | 'none';
 
@@ -33,7 +38,8 @@ export interface ComponentItem {
   size?: 'sm' | 'md' | 'lg';
   content?: string;
   imageUrl?: string;
-  items?: string[]; // 탭이나 리스트 아이템용
+  items?: string[]; // 탭, 리스트, 칩, 체크리스트용
+  headerColor?: string; // 컬러 블록 상단 바 색상 (보라, 초록 등)
   action?: ActionConfig;
   styles?: {
     backgroundColor?: string;
@@ -49,10 +55,19 @@ export interface ComponentItem {
   };
 }
 
+export interface Panel {
+  id: string;
+  title: string;
+  width: string; // '240px', '320px', 'flex-1' 등
+  components: ComponentItem[];
+}
+
+export type PanelLayoutPreset = '1-panel' | '2-panel' | '3-panel';
+
 export interface Screen {
   id: string;
   name: string;
-  components: ComponentItem[];
+  panels: Panel[];
 }
 
 export interface HistoryState {

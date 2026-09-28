@@ -1,25 +1,28 @@
 import { create } from 'zustand';
-import { ComponentItem, Screen, ViewportMode } from '../types/builder';
+import { ComponentItem, Screen, PanelLayoutPreset } from '../types/builder';
 import { INITIAL_SCREENS } from '../utils/defaultTemplates';
 
 interface CanvasStore {
   screens: Screen[];
   activeScreenId: string;
+  selectedPanelId: string;
   selectedComponentId: string | null;
-  viewportMode: ViewportMode;
   isPreviewMode: boolean;
   history: Screen[][];
   future: Screen[][];
 
   // Actions
-  setViewportMode: (mode: ViewportMode) => void;
   togglePreviewMode: () => void;
   setActiveScreen: (screenId: string) => void;
   addScreen: (name: string) => void;
   deleteScreen: (screenId: string) => void;
+  selectPanel: (panelId: string) => void;
   selectComponent: (id: string | null) => void;
   
-  addComponent: (component: Omit<ComponentItem, 'id'>, targetIndex?: number) => void;
+  setPanelLayout: (preset: PanelLayoutPreset) => void;
+  setPanelWidth: (panelId: string, width: string) => void;
+
+  addComponent: (component: Omit<ComponentItem, 'id'>, targetPanelId?: string) => void;
   updateComponent: (id: string, updates: Partial<ComponentItem>) => void;
   deleteComponent: (id: string) => void;
   moveComponent: (id: string, direction: 'up' | 'down') => void;
@@ -31,21 +34,21 @@ interface CanvasStore {
 export const useCanvasStore = create<CanvasStore>((set, get) => ({
   screens: INITIAL_SCREENS,
   activeScreenId: INITIAL_SCREENS[0].id,
-  selectedComponentId: INITIAL_SCREENS[0].components[0].id,
-  viewportMode: 'mobile',
+  selectedPanelId: INITIAL_SCREENS[0].panels[0].id,
+  selectedComponentId: INITIAL_SCREENS[0].panels[0].components[0]?.id || null,
   isPreviewMode: false,
   history: [],
   future: [],
 
-  setViewportMode: (mode) => set({ viewportMode: mode }),
-  
   togglePreviewMode: () => set((state) => ({ isPreviewMode: !state.isPreviewMode })),
 
   setActiveScreen: (screenId) => {
     const screen = get().screens.find((s) => s.id === screenId);
+    if (!screen) return;
     set({
       activeScreenId: screenId,
-      selectedComponentId: screen && screen.components.length > 0 ? screen.components[0].id : null,
+      selectedPanelId: screen.panels[0]?.id || '',
+      selectedComponentId: screen.panels[0]?.components[0]?.id || null,
     });
   },
 
@@ -54,13 +57,12 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
     const newScreen: Screen = {
       id: newId,
       name,
-      components: [
+      panels: [
         {
-          id: `comp-header-${Date.now()}`,
-          type: 'header',
-          name: '헤더 바',
-          label: name,
-          styles: { backgroundColor: '#0f172a', textColor: '#ffffff', padding: '16px', fontWeight: 'bold' },
+          id: `panel-${Date.now()}-1`,
+          title: '기본 패널',
+          width: 'flex-1',
+          components: [],
         },
       ],
     };
@@ -69,7 +71,8 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
       future: [],
       screens: [...state.screens, newScreen],
       activeScreenId: newId,
-      selectedComponentId: newScreen.components[0].id,
+      selectedPanelId: newScreen.panels[0].id,
+      selectedComponentId: null,
     }));
   },
 
@@ -80,14 +83,79 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
     set({
       screens: filtered,
       activeScreenId: activeScreenId === screenId ? filtered[0].id : activeScreenId,
-      selectedComponentId: filtered[0].components[0]?.id || null,
+      selectedPanelId: filtered[0].panels[0]?.id || '',
+      selectedComponentId: null,
     });
   },
 
+  selectPanel: (panelId) => set({ selectedPanelId: panelId }),
+
   selectComponent: (id) => set({ selectedComponentId: id }),
 
-  addComponent: (componentData, targetIndex) => {
+  setPanelLayout: (preset) => {
     const { screens, activeScreenId, history } = get();
+    const currentScreen = screens.find((s) => s.id === activeScreenId);
+    if (!currentScreen) return;
+
+    let newPanels = [...currentScreen.panels];
+
+    if (preset === '1-panel') {
+      newPanels = [
+        {
+          id: `panel-1-${Date.now()}`,
+          title: '전체 화면 패널',
+          width: 'flex-1',
+          components: currentScreen.panels.flatMap((p) => p.components),
+        },
+      ];
+    } else if (preset === '2-panel') {
+      const allComps = currentScreen.panels.flatMap((p) => p.components);
+      newPanels = [
+        {
+          id: `panel-side-${Date.now()}`,
+          title: '좌측 사이드바',
+          width: '280px',
+          components: allComps.slice(0, 2),
+        },
+        {
+          id: `panel-main-${Date.now()}`,
+          title: '메인 컨텐츠',
+          width: 'flex-1',
+          components: allComps.slice(2),
+        },
+      ];
+    } else if (preset === '3-panel') {
+      newPanels = INITIAL_SCREENS[0].panels;
+    }
+
+    const updatedScreens = screens.map((scr) =>
+      scr.id === activeScreenId ? { ...scr, panels: newPanels } : scr
+    );
+
+    set({
+      history: [...history, screens],
+      future: [],
+      screens: updatedScreens,
+      selectedPanelId: newPanels[0].id,
+      selectedComponentId: newPanels[0].components[0]?.id || null,
+    });
+  },
+
+  setPanelWidth: (panelId, width) => {
+    const { screens, activeScreenId } = get();
+    const updatedScreens = screens.map((scr) => {
+      if (scr.id !== activeScreenId) return scr;
+      return {
+        ...scr,
+        panels: scr.panels.map((p) => (p.id === panelId ? { ...p, width } : p)),
+      };
+    });
+    set({ screens: updatedScreens });
+  },
+
+  addComponent: (componentData, targetPanelId) => {
+    const { screens, activeScreenId, selectedPanelId, history } = get();
+    const panelToUse = targetPanelId || selectedPanelId;
     const newComponent: ComponentItem = {
       ...componentData,
       id: `comp-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
@@ -95,19 +163,23 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
 
     const newScreens = screens.map((scr) => {
       if (scr.id !== activeScreenId) return scr;
-      const comps = [...scr.components];
-      if (typeof targetIndex === 'number' && targetIndex >= 0) {
-        comps.splice(targetIndex, 0, newComponent);
-      } else {
-        comps.push(newComponent);
-      }
-      return { ...scr, components: comps };
+      return {
+        ...scr,
+        panels: scr.panels.map((p) => {
+          if (p.id !== panelToUse) return p;
+          return {
+            ...p,
+            components: [...p.components, newComponent],
+          };
+        }),
+      };
     });
 
     set({
       history: [...history, screens],
       future: [],
       screens: newScreens,
+      selectedPanelId: panelToUse,
       selectedComponentId: newComponent.id,
     });
   },
@@ -118,18 +190,21 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
       if (scr.id !== activeScreenId) return scr;
       return {
         ...scr,
-        components: scr.components.map((comp) => {
-          if (comp.id !== id) return comp;
-          const mergedAction = updates.action
-            ? ({ ...(comp.action || { type: 'none' }), ...updates.action } as any)
-            : comp.action;
-          return {
-            ...comp,
-            ...updates,
-            styles: { ...comp.styles, ...updates.styles },
-            action: mergedAction,
-          };
-        }),
+        panels: scr.panels.map((p) => ({
+          ...p,
+          components: p.components.map((comp) => {
+            if (comp.id !== id) return comp;
+            const mergedAction = updates.action
+              ? ({ ...(comp.action || { type: 'none' }), ...updates.action } as any)
+              : comp.action;
+            return {
+              ...comp,
+              ...updates,
+              styles: { ...comp.styles, ...updates.styles },
+              action: mergedAction,
+            };
+          }),
+        })),
       };
     });
 
@@ -142,7 +217,10 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
       if (scr.id !== activeScreenId) return scr;
       return {
         ...scr,
-        components: scr.components.filter((comp) => comp.id !== id),
+        panels: scr.panels.map((p) => ({
+          ...p,
+          components: p.components.filter((comp) => comp.id !== id),
+        })),
       };
     });
 
@@ -156,24 +234,24 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
 
   moveComponent: (id, direction) => {
     const { screens, activeScreenId } = get();
-    const targetScreen = screens.find((s) => s.id === activeScreenId);
-    if (!targetScreen) return;
+    const newScreens = screens.map((scr) => {
+      if (scr.id !== activeScreenId) return scr;
+      return {
+        ...scr,
+        panels: scr.panels.map((p) => {
+          const idx = p.components.findIndex((c) => c.id === id);
+          if (idx === -1) return p;
+          const comps = [...p.components];
+          if (direction === 'up' && idx > 0) {
+            [comps[idx - 1], comps[idx]] = [comps[idx], comps[idx - 1]];
+          } else if (direction === 'down' && idx < comps.length - 1) {
+            [comps[idx + 1], comps[idx]] = [comps[idx], comps[idx + 1]];
+          }
+          return { ...p, components: comps };
+        }),
+      };
+    });
 
-    const comps = [...targetScreen.components];
-    const index = comps.findIndex((c) => c.id === id);
-    if (index === -1) return;
-
-    if (direction === 'up' && index > 0) {
-      const temp = comps[index - 1];
-      comps[index - 1] = comps[index];
-      comps[index] = temp;
-    } else if (direction === 'down' && index < comps.length - 1) {
-      const temp = comps[index + 1];
-      comps[index + 1] = comps[index];
-      comps[index] = temp;
-    }
-
-    const newScreens = screens.map((s) => (s.id === activeScreenId ? { ...s, components: comps } : s));
     set({ screens: newScreens });
   },
 

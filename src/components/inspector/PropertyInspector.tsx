@@ -8,7 +8,8 @@ export const PropertyInspector: React.FC = () => {
   const { screens, activeScreenId, selectedComponentId, updateComponent, deleteComponent } = useCanvasStore();
 
   const currentScreen = screens.find((s) => s.id === activeScreenId);
-  const selectedComponent = currentScreen?.components.find((c) => c.id === selectedComponentId);
+  const allComponents = currentScreen?.panels.flatMap((p) => p.components) || [];
+  const selectedComponent = allComponents.find((c) => c.id === selectedComponentId);
 
   if (!selectedComponent) {
     return (
@@ -47,6 +48,26 @@ export const PropertyInspector: React.FC = () => {
 
       {/* 기본 텍스트 및 속성 */}
       <div className="space-y-3">
+        {selectedComponent.headerColor !== undefined && (
+          <div>
+            <label className="text-xs font-semibold text-slate-600 block mb-1">상단 타이틀 바 색상 (Header Color)</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                value={selectedComponent.headerColor || '#9333ea'}
+                onChange={(e) => handleUpdate({ headerColor: e.target.value })}
+                className="w-7 h-7 rounded border border-slate-300 bg-transparent cursor-pointer"
+              />
+              <input
+                type="text"
+                value={selectedComponent.headerColor || ''}
+                onChange={(e) => handleUpdate({ headerColor: e.target.value })}
+                className="flex-1 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800"
+              />
+            </div>
+          </div>
+        )}
+
         {selectedComponent.label !== undefined && (
           <div>
             <label className="text-xs font-semibold text-slate-600 block mb-1">라벨 / 텍스트</label>

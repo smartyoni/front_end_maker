@@ -1,5 +1,5 @@
 import React from 'react';
-import { Smartphone, Tablet, Monitor, Play, EyeOff, Code, Plus, Trash2, Undo2, Redo2 } from 'lucide-react';
+import { Play, EyeOff, Code, Plus, Trash2, Undo2, Redo2 } from 'lucide-react';
 import { useCanvasStore } from '../../store/canvasStore';
 
 interface TopBarProps {
@@ -13,8 +13,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
     setActiveScreen,
     addScreen,
     deleteScreen,
-    viewportMode,
-    setViewportMode,
+    setPanelLayout,
     isPreviewMode,
     togglePreviewMode,
     undo,
@@ -88,35 +87,29 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
         </div>
       </div>
 
-      {/* 중앙: 뷰포트 전환 & Undo/Redo */}
+      {/* 중앙: 패널 분할 레이아웃 선택 & Undo/Redo */}
       <div className="flex items-center gap-3">
         <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200">
           <button
-            onClick={() => setViewportMode('mobile')}
-            className={`p-1.5 rounded-md transition-colors ${
-              viewportMode === 'mobile' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'
-            }`}
-            title="모바일 뷰 (375px)"
+            onClick={() => setPanelLayout('1-panel')}
+            className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold text-slate-700 hover:bg-white transition"
+            title="1단 단일 패널 (전체 뷰)"
           >
-            <Smartphone className="w-4 h-4" />
+            <span>1단 뷰</span>
           </button>
           <button
-            onClick={() => setViewportMode('tablet')}
-            className={`p-1.5 rounded-md transition-colors ${
-              viewportMode === 'tablet' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'
-            }`}
-            title="태블릿 뷰 (768px)"
+            onClick={() => setPanelLayout('2-panel')}
+            className="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold text-slate-700 hover:bg-white transition"
+            title="2단 분할 패널 (사이드바 + 메인)"
           >
-            <Tablet className="w-4 h-4" />
+            <span>2단 분할</span>
           </button>
           <button
-            onClick={() => setViewportMode('desktop')}
-            className={`p-1.5 rounded-md transition-colors ${
-              viewportMode === 'desktop' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'
-            }`}
-            title="데스크톱/웹 뷰 (1024px)"
+            onClick={() => setPanelLayout('3-panel')}
+            className="flex items-center gap-1 px-2.5 py-1 rounded text-xs font-bold bg-white text-blue-600 shadow-xs border border-slate-200 transition"
+            title="3단 분할 패널 (사이드바 + 목록 + 상세)"
           >
-            <Monitor className="w-4 h-4" />
+            <span>3단 분할 (추천)</span>
           </button>
         </div>
 

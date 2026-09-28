@@ -5,9 +5,13 @@ import {
   FormInput,
   LayoutTemplate,
   List,
-  Navigation,
   Columns,
   ToggleLeft,
+  CheckSquare,
+  Tag,
+  FolderTree,
+  FileText,
+  Search,
 } from 'lucide-react';
 import { useCanvasStore } from '../../store/canvasStore';
 import { ComponentItem, ComponentType } from '../../types/builder';
@@ -16,179 +20,214 @@ interface PaletteItemDef {
   type: ComponentType;
   title: string;
   icon: React.ReactNode;
-  category: 'layout' | 'basic' | 'content';
+  category: 'productivity' | 'general';
   defaultData: Omit<ComponentItem, 'id'>;
 }
 
 const PALETTE_ITEMS: PaletteItemDef[] = [
+  // 업무 및 생산성 전용 블록 (공유해주신 디자인 기반)
+  {
+    type: 'colorBlock',
+    title: '보라색 메모 블록',
+    icon: <FileText className="w-4 h-4 text-purple-600" />,
+    category: 'productivity',
+    defaultData: {
+      type: 'colorBlock',
+      name: '안내문 메모 블록',
+      label: '안내문 [확인 사항]',
+      headerColor: '#9333ea',
+      content: '• 첫 번째 중요 확인 항목을 작성하세요.\n• 두 번째 상세 내용을 여기에 입력하세요.',
+      styles: { backgroundColor: '#ffffff', borderRadius: '12px' },
+    },
+  },
+  {
+    type: 'checklist',
+    title: '체크리스트 블록',
+    icon: <CheckSquare className="w-4 h-4 text-emerald-600" />,
+    category: 'productivity',
+    defaultData: {
+      type: 'checklist',
+      name: '체크리스트 블록',
+      label: '체크리스트',
+      headerColor: '#16a34a',
+      items: ['신분증 원본 지참', '서류 접수 확인', '최종 검토 완료'],
+      styles: { backgroundColor: '#ffffff', borderRadius: '12px' },
+    },
+  },
+  {
+    type: 'chipGroup',
+    title: '바로가기 칩 메뉴',
+    icon: <Tag className="w-4 h-4 text-amber-600" />,
+    category: 'productivity',
+    defaultData: {
+      type: 'chipGroup',
+      name: '바로가기 칩 모음',
+      items: ['일정관리', '블로그', '계약자료', '광고', '고객관리'],
+      styles: { padding: '8px 0' },
+    },
+  },
+  {
+    type: 'categoryList',
+    title: '카테고리 트리 목록',
+    icon: <FolderTree className="w-4 h-4 text-blue-600" />,
+    category: 'productivity',
+    defaultData: {
+      type: 'categoryList',
+      name: '카테고리 목록',
+      label: '카테고리 (8)',
+      items: ['계약진행현황 [3]', '서류작성예정 [1]', '완료 보관함 [0]'],
+      styles: { backgroundColor: '#ffffff', padding: '10px', borderRadius: '8px' },
+    },
+  },
+  {
+    type: 'quickInput',
+    title: '체크리스트 퀵 추가바',
+    icon: <Search className="w-4 h-4 text-sky-600" />,
+    category: 'productivity',
+    defaultData: {
+      type: 'quickInput',
+      name: '인라인 추가바',
+      placeholder: '새 체크리스트 항목 입력...',
+      label: '+ 추가',
+      styles: { padding: '6px 0' },
+    },
+  },
+
+  // 기본 UI 및 레이아웃 요소
   {
     type: 'header',
-    title: '상단 네비바',
-    icon: <Heading className="w-4 h-4 text-sky-400" />,
-    category: 'layout',
+    title: '상단 네비/타이틀',
+    icon: <Heading className="w-4 h-4 text-slate-700" />,
+    category: 'general',
     defaultData: {
       type: 'header',
-      name: '헤더 바',
-      label: '새 헤더 타이틀',
-      styles: { backgroundColor: '#0f172a', textColor: '#ffffff', padding: '16px', fontWeight: 'bold' },
-    },
-  },
-  {
-    type: 'bottomNav',
-    title: '하단 탭바',
-    icon: <Navigation className="w-4 h-4 text-emerald-400" />,
-    category: 'layout',
-    defaultData: {
-      type: 'bottomNav',
-      name: '바텀 내비게이션',
-      items: ['홈', '검색', '내정보'],
-      styles: { backgroundColor: '#0f172a', textColor: '#94a3b8', padding: '12px' },
-    },
-  },
-  {
-    type: 'tabs',
-    title: '세그먼트 탭',
-    icon: <Columns className="w-4 h-4 text-indigo-400" />,
-    category: 'layout',
-    defaultData: {
-      type: 'tabs',
-      name: '상단 탭',
-      items: ['전체', '인기', '신규'],
-      styles: { padding: '8px' },
+      name: '패널 타이틀',
+      label: '새 패널 타이틀',
+      styles: { backgroundColor: '#ffffff', textColor: '#0f172a', padding: '12px', fontWeight: 'bold' },
     },
   },
   {
     type: 'button',
     title: '액션 버튼',
-    icon: <Square className="w-4 h-4 text-blue-400" />,
-    category: 'basic',
+    icon: <Square className="w-4 h-4 text-blue-600" />,
+    category: 'general',
     defaultData: {
       type: 'button',
       name: '버튼',
-      label: '클릭하세요',
+      label: '실행 버튼',
       variant: 'primary',
-      styles: {
-        backgroundColor: '#3b82f6',
-        textColor: '#ffffff',
-        padding: '12px 20px',
-        borderRadius: '10px',
-        fullWidth: true,
-      },
+      styles: { backgroundColor: '#2563eb', textColor: '#ffffff', padding: '10px 16px', borderRadius: '8px', fullWidth: true },
     },
   },
   {
     type: 'input',
     title: '텍스트 입력창',
-    icon: <FormInput className="w-4 h-4 text-amber-400" />,
-    category: 'basic',
+    icon: <FormInput className="w-4 h-4 text-slate-700" />,
+    category: 'general',
     defaultData: {
       type: 'input',
       name: '입력 필드',
-      label: '이메일 주소',
-      placeholder: 'example@domain.com',
-      styles: { padding: '10px 14px', borderRadius: '8px' },
+      label: '항목명',
+      placeholder: '내용을 입력하세요...',
+      styles: { padding: '8px 12px', borderRadius: '8px' },
     },
   },
   {
     type: 'card',
-    title: '정보 카드',
-    icon: <LayoutTemplate className="w-4 h-4 text-purple-400" />,
-    category: 'content',
+    title: '안내 카드',
+    icon: <LayoutTemplate className="w-4 h-4 text-purple-600" />,
+    category: 'general',
     defaultData: {
       type: 'card',
       name: '카드',
-      label: '새 소식 카드',
-      content: '여기에 카드에 표시할 상세 안내 문구를 작성해 보세요.',
-      styles: {
-        backgroundColor: '#1e293b',
-        textColor: '#cbd5e1',
-        padding: '16px',
-        borderRadius: '14px',
-        margin: '8px 0',
-      },
+      label: '안내 카드',
+      content: '여기에 카드 세부 내용을 입력하세요.',
+      styles: { backgroundColor: '#ffffff', padding: '14px', borderRadius: '10px' },
+    },
+  },
+  {
+    type: 'tabs',
+    title: '세그먼트 탭',
+    icon: <Columns className="w-4 h-4 text-indigo-600" />,
+    category: 'general',
+    defaultData: {
+      type: 'tabs',
+      name: '탭 메뉴',
+      items: ['전체', '진행중', '완료'],
+      styles: { padding: '8px' },
     },
   },
   {
     type: 'list',
-    title: '목록 리스트',
-    icon: <List className="w-4 h-4 text-teal-400" />,
-    category: 'content',
+    title: '데이터 리스트',
+    icon: <List className="w-4 h-4 text-teal-600" />,
+    category: 'general',
     defaultData: {
       type: 'list',
-      name: '리스트',
-      label: '메뉴 목록',
-      items: ['알림 센터', '결제 수단 관리', '고객센터 문의'],
-      styles: { backgroundColor: '#1e293b', padding: '8px', borderRadius: '12px' },
+      name: '아이템 목록',
+      items: ['계약서작성 후 안내문', '계약서작성_준비사항', '주의사항 안내'],
+      styles: { backgroundColor: '#ffffff', padding: '8px', borderRadius: '8px' },
     },
   },
   {
     type: 'switch',
     title: '토글 스위치',
-    icon: <ToggleLeft className="w-4 h-4 text-pink-400" />,
-    category: 'basic',
+    icon: <ToggleLeft className="w-4 h-4 text-pink-600" />,
+    category: 'general',
     defaultData: {
       type: 'switch',
-      name: '토글 설정',
-      label: '푸시 알림 받기',
-      styles: { padding: '8px 0' },
+      name: '설정 스위치',
+      label: '알림 받기',
+      styles: { padding: '6px 0' },
     },
   },
 ];
 
 export const ComponentPalette: React.FC = () => {
-  const { addComponent } = useCanvasStore();
+  const { addComponent, screens, activeScreenId, selectedPanelId } = useCanvasStore();
+
+  const currentScreen = screens.find((s) => s.id === activeScreenId);
+  const targetPanel = currentScreen?.panels.find((p) => p.id === selectedPanelId) || currentScreen?.panels[0];
 
   return (
     <div className="flex-1 overflow-y-auto p-3 space-y-4">
+      {/* 타겟 패널 안내 배너 */}
+      <div className="p-2.5 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 shadow-xs">
+        <span className="font-semibold block text-[11px] text-blue-700 uppercase tracking-wider mb-0.5">부착 대상 패널</span>
+        <span className="font-bold truncate block">📍 {targetPanel?.title || '선택된 패널 없음'}</span>
+      </div>
+
       <div>
-        <h3 className="text-xs font-bold text-slate-500 mb-2 px-1 uppercase tracking-wider">레이아웃 & 네비게이션</h3>
+        <h3 className="text-xs font-bold text-slate-600 mb-2 px-1 uppercase tracking-wider">업무 & 메모 전용 블록</h3>
         <div className="grid grid-cols-2 gap-2">
-          {PALETTE_ITEMS.filter((i) => i.category === 'layout').map((item) => (
+          {PALETTE_ITEMS.filter((i) => i.category === 'productivity').map((item) => (
             <button
               key={item.title}
               onClick={() => addComponent(item.defaultData)}
-              className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-blue-400 hover:shadow-sm transition-all text-slate-700 group"
+              className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-blue-500 hover:shadow-md transition-all text-slate-800 group"
             >
-              <div className="p-2 rounded-lg bg-white border border-slate-200 group-hover:scale-110 shadow-sm transition-transform mb-1.5">
+              <div className="p-2 rounded-lg bg-white border border-slate-200 group-hover:scale-110 shadow-xs transition-transform mb-1.5">
                 {item.icon}
               </div>
-              <span className="text-xs font-semibold">{item.title}</span>
+              <span className="text-xs font-semibold text-center leading-tight">{item.title}</span>
             </button>
           ))}
         </div>
       </div>
 
       <div>
-        <h3 className="text-xs font-bold text-slate-500 mb-2 px-1 uppercase tracking-wider">기본 UI 요소</h3>
+        <h3 className="text-xs font-bold text-slate-600 mb-2 px-1 uppercase tracking-wider">기본 UI & 레이아웃</h3>
         <div className="grid grid-cols-2 gap-2">
-          {PALETTE_ITEMS.filter((i) => i.category === 'basic').map((item) => (
+          {PALETTE_ITEMS.filter((i) => i.category === 'general').map((item) => (
             <button
               key={item.title}
               onClick={() => addComponent(item.defaultData)}
-              className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-blue-400 hover:shadow-sm transition-all text-slate-700 group"
+              className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-blue-500 hover:shadow-md transition-all text-slate-800 group"
             >
-              <div className="p-2 rounded-lg bg-white border border-slate-200 group-hover:scale-110 shadow-sm transition-transform mb-1.5">
+              <div className="p-2 rounded-lg bg-white border border-slate-200 group-hover:scale-110 shadow-xs transition-transform mb-1.5">
                 {item.icon}
               </div>
-              <span className="text-xs font-semibold">{item.title}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-xs font-bold text-slate-500 mb-2 px-1 uppercase tracking-wider">컨텐츠 블록</h3>
-        <div className="grid grid-cols-2 gap-2">
-          {PALETTE_ITEMS.filter((i) => i.category === 'content').map((item) => (
-            <button
-              key={item.title}
-              onClick={() => addComponent(item.defaultData)}
-              className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-blue-400 hover:shadow-sm transition-all text-slate-700 group"
-            >
-              <div className="p-2 rounded-lg bg-white border border-slate-200 group-hover:scale-110 shadow-sm transition-transform mb-1.5">
-                {item.icon}
-              </div>
-              <span className="text-xs font-semibold">{item.title}</span>
+              <span className="text-xs font-semibold text-center leading-tight">{item.title}</span>
             </button>
           ))}
         </div>
