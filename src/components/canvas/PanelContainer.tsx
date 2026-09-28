@@ -75,8 +75,8 @@ export const PanelContainer: React.FC<PanelContainerProps> = ({ panel, index }) 
         </div>
       )}
 
-      {/* 패널 내부 컴포넌트 렌더링 영역 */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
+      {/* 패널 내부 컴포넌트 렌더링 영역 (여백 없이 꽉 찬 밀착 레이아웃) */}
+      <div className="flex-1 overflow-y-auto p-1.5 space-y-1.5">
         {panel.components.length === 0 ? (
           <div className="h-32 flex flex-col items-center justify-center text-center p-4 border border-dashed border-slate-300 rounded-xl text-slate-400">
             <span className="text-xs">컴포넌트가 없습니다</span>

@@ -133,8 +133,7 @@ export const INITIAL_SCREENS: Screen[] = [
               '• 확정일자/주택임대차신고하기: 가양1동 주민센터 (계약서 작성 후 바로 하실수 있습니다)\n• 지방세 체납내역, 국세일자무미현황/전입세대확인 가능\n• 잔금일 전 입주지원센터에 입주증 발급 신청하기\n• 관리실에서 입주자가이드 작성',
             styles: {
               backgroundColor: '#ffffff',
-              borderRadius: '12px',
-              margin: '0 0 16px 0',
+              borderRadius: '8px',
             },
           },
           {

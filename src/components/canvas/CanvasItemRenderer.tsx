@@ -167,7 +167,7 @@ function renderComponentContent(comp: ComponentItem) {
       const cols = comp.columns || 4;
       return (
         <div
-          className="grid gap-1.5 p-1 w-full"
+          className="grid gap-1 p-0 w-full"
           style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
         >
           {(comp.items || ['메뉴1', '메뉴2']).map((chip, idx) => {
