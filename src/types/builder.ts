@@ -40,6 +40,7 @@ export interface ComponentItem {
   imageUrl?: string;
   items?: string[]; // 탭, 리스트, 칩, 체크리스트용
   headerColor?: string; // 컬러 블록 상단 바 색상 (보라, 초록 등)
+  columns?: number; // 칩 메뉴나 그리드의 열(컬럼) 개수
   action?: ActionConfig;
   styles?: {
     backgroundColor?: string;

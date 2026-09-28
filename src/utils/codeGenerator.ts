@@ -56,10 +56,12 @@ function generateComponentJSX(comp: ComponentItem): string {
           </div>
         </div>`;
 
-    case 'chipGroup':
-      return `<div className="flex flex-wrap gap-1.5 p-1">
-          ${(comp.items || []).map((chip) => `<span className="px-2.5 py-1 rounded-md text-[11px] font-semibold border bg-slate-100 text-slate-800">${chip}</span>`).join('\n          ')}
+    case 'chipGroup': {
+      const cols = comp.columns || 4;
+      return `<div className="grid gap-1.5 p-1 w-full" style={{ gridTemplateColumns: 'repeat(${cols}, minmax(0, 1fr))' }}>
+          ${(comp.items || []).map((chip) => `<span className="w-full py-1.5 px-1 rounded-md text-[11px] font-semibold border bg-slate-100 text-slate-800 text-center truncate flex items-center justify-center shadow-xs">${chip}</span>`).join('\n          ')}
         </div>`;
+    }
 
     case 'categoryList':
       return `<div className="w-full space-y-1">

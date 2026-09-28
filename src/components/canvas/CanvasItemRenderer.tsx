@@ -163,9 +163,13 @@ function renderComponentContent(comp: ComponentItem) {
         </div>
       );
 
-    case 'chipGroup':
+    case 'chipGroup': {
+      const cols = comp.columns || 4;
       return (
-        <div className="flex flex-wrap gap-1.5 p-1">
+        <div
+          className="grid gap-1.5 p-1 w-full"
+          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+        >
           {(comp.items || ['메뉴1', '메뉴2']).map((chip, idx) => {
             const colors = [
               'bg-amber-100 text-amber-800 border-amber-300',
@@ -179,7 +183,8 @@ function renderComponentContent(comp: ComponentItem) {
             return (
               <span
                 key={idx}
-                className={`px-2.5 py-1 rounded-md text-[11px] font-semibold border shadow-xs ${colorClass}`}
+                className={`w-full py-1.5 px-1 rounded-md text-[11px] font-semibold border shadow-xs text-center truncate flex items-center justify-center ${colorClass}`}
+                title={chip}
               >
                 {chip}
               </span>
@@ -187,6 +192,7 @@ function renderComponentContent(comp: ComponentItem) {
           })}
         </div>
       );
+    }
 
     case 'categoryList':
       return (

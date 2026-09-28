@@ -28,6 +28,7 @@ export const INITIAL_SCREENS: Screen[] = [
             id: 'comp-chips',
             type: 'chipGroup',
             name: '바로가기 메뉴 칩',
+            columns: 4,
             items: ['일정관리', '블로그', '인쇄판', '굿뷰', '계약', '계약자료', '광고', '매출장', '고객'],
             styles: {
               padding: '10px 4px',

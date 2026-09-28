@@ -48,6 +48,35 @@ export const PropertyInspector: React.FC = () => {
 
       {/* 기본 텍스트 및 속성 */}
       <div className="space-y-3">
+        {selectedComponent.type === 'chipGroup' && (
+          <div>
+            <label className="text-xs font-semibold text-slate-600 block mb-1">
+              한 행당 열(컬럼) 개수 (동일 너비 배분)
+            </label>
+            <div className="grid grid-cols-4 gap-1.5">
+              {[2, 3, 4, 5].map((col) => {
+                const isActive = (selectedComponent.columns || 4) === col;
+                return (
+                  <button
+                    key={col}
+                    onClick={() => handleUpdate({ columns: col })}
+                    className={`py-1.5 rounded-lg text-xs font-bold border transition ${
+                      isActive
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
+                        : 'bg-slate-50 border-slate-300 text-slate-700 hover:bg-slate-100'
+                    }`}
+                  >
+                    {col}열
+                  </button>
+                );
+              })}
+            </div>
+            <p className="text-[11px] text-slate-400 mt-1">
+              모든 칩 메뉴의 가로 너비가 균등하게 자동 정렬됩니다.
+            </p>
+          </div>
+        )}
+
         {selectedComponent.headerColor !== undefined && (
           <div>
             <label className="text-xs font-semibold text-slate-600 block mb-1">상단 타이틀 바 색상 (Header Color)</label>
