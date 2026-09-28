@@ -1,5 +1,6 @@
-import React from 'react';
-import { Play, EyeOff, Code, Plus, Trash2, Undo2, Redo2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Play, EyeOff, Code, Plus, Trash2, Undo2, Redo2, Camera } from 'lucide-react';
+import { toPng } from 'html-to-image';
 import { useCanvasStore } from '../../store/canvasStore';
 
 interface TopBarProps {
@@ -21,6 +22,34 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
     history,
     future,
   } = useCanvasStore();
+
+  const [isCapturing, setIsCapturing] = useState(false);
+
+  const handleCaptureImage = async () => {
+    const node = document.getElementById('web-app-canvas-container');
+    if (!node) {
+      alert('캡처할 캔버스 영역을 찾을 수 없습니다.');
+      return;
+    }
+    try {
+      setIsCapturing(true);
+      const dataUrl = await toPng(node, {
+        cacheBust: true,
+        pixelRatio: 2,
+        backgroundColor: '#ffffff',
+      });
+      const currentName = screens.find((s) => s.id === activeScreenId)?.name || 'app-design';
+      const link = document.createElement('a');
+      link.download = `${currentName}_디자인.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      alert('이미지 저장 중 오류가 발생했습니다.');
+      console.error(err);
+    } finally {
+      setIsCapturing(false);
+    }
+  };
 
   const handleAddScreen = () => {
     const name = prompt('새 화면 이름을 입력하세요:', `화면 ${screens.length + 1}`);
@@ -148,20 +177,13 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
         </button>
 
         <button
-          onClick={() => {
-            const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify({ updatedAt: new Date().toISOString(), screens }, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute('href', dataStr);
-            downloadAnchor.setAttribute('download', 'current-design.json');
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-          }}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition"
-          title="안티그래비티 MCP 서버에서 읽을 수 있는 current-design.json 파일로 저장합니다."
+          onClick={handleCaptureImage}
+          disabled={isCapturing}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition disabled:opacity-50"
+          title="캔버스 화면을 고화질 PNG 이미지 파일로 즉시 캡처하여 저장합니다."
         >
-          <Code className="w-3.5 h-3.5" />
-          <span>디자인 JSON 저장</span>
+          <Camera className="w-3.5 h-3.5" />
+          <span>{isCapturing ? '캡처 중...' : '이미지 저장 (PNG)'}</span>
         </button>
 
         <button
