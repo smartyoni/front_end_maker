@@ -145,10 +145,25 @@ export const PropertyInspector: React.FC = () => {
                   items: e.target.value.split(',').map((s) => s.trim()).filter(Boolean),
                 })
               }
-              className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition"
+              className="w-full px-2 py-1.5 bg-slate-50 border border-slate-300 text-xs text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition"
             />
           </div>
         )}
+
+        {/* 요소 기능 및 개발 스펙 메모란 */}
+        <div className="pt-2 border-t border-slate-200">
+          <label className="text-xs font-bold text-blue-700 block mb-1 flex items-center justify-between">
+            <span>📝 요소 기능 & 개발 메모</span>
+            <span className="text-[10px] text-slate-400 font-normal">안티그래비티 참고용</span>
+          </label>
+          <textarea
+            rows={3}
+            value={selectedComponent.functionNote || ''}
+            placeholder="이 요소에 들어갈 기능, API 연결, 비즈니스 로직을 자유롭게 메모하세요. (예: 클릭 시 확인 팝업 후 계약서 PDF 다운로드)"
+            onChange={(e) => handleUpdate({ functionNote: e.target.value })}
+            className="w-full p-2 bg-amber-50/50 border border-amber-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white resize-none transition"
+          />
+        </div>
       </div>
 
       {/* 스타일 편집 분리 컴포넌트 */}

@@ -56,9 +56,9 @@ function renderComponentContent(comp: ComponentItem) {
   switch (comp.type) {
     case 'header':
       return (
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between py-1">
           <span className="font-bold text-base">{comp.label || 'Header'}</span>
-          <div className="w-5 h-5 rounded-full bg-black/10 flex items-center justify-center text-[10px] text-slate-700">
+          <div className="w-5 h-5 bg-black/10 flex items-center justify-center text-[10px] text-slate-700">
             ☰
           </div>
         </div>
@@ -67,9 +67,7 @@ function renderComponentContent(comp: ComponentItem) {
     case 'button':
       return (
         <button
-          className={`w-full py-2.5 px-4 text-center font-semibold rounded-lg transition ${
-            comp.variant === 'primary' ? 'shadow-md shadow-blue-500/20' : ''
-          }`}
+          className="w-full py-2 px-3 text-center font-semibold transition"
           style={{
             backgroundColor: comp.styles?.backgroundColor || '#2563eb',
             color: comp.styles?.textColor || '#ffffff',
@@ -83,7 +81,7 @@ function renderComponentContent(comp: ComponentItem) {
       return (
         <div className="space-y-1 w-full">
           {comp.label && <div className="text-xs font-semibold text-slate-700">{comp.label}</div>}
-          <div className="px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-400 shadow-sm">
+          <div className="px-2.5 py-1.5 bg-white border border-slate-300 text-xs text-slate-400">
             {comp.placeholder || '입력하세요...'}
           </div>
         </div>
@@ -91,7 +89,7 @@ function renderComponentContent(comp: ComponentItem) {
 
     case 'card':
       return (
-        <div className="space-y-1.5">
+        <div className="space-y-1 p-2 border border-slate-200 bg-white">
           <h4 className="font-bold text-sm text-slate-800">{comp.label || '카드 제목'}</h4>
           <p className="text-xs text-slate-600 leading-relaxed">{comp.content || '카드 설명 내용입니다.'}</p>
         </div>
@@ -100,10 +98,10 @@ function renderComponentContent(comp: ComponentItem) {
     case 'tabs':
       return (
         <div className="flex border-b border-slate-200 text-xs">
-          {(comp.items || ['탭 1', '탭 2']).map((tab, idx) => (
+          {(comp.items || ['1', '2', '3']).map((tab, idx) => (
             <div
               key={idx}
-              className={`flex-1 py-2 text-center font-semibold ${
+              className={`flex-1 py-1.5 text-center font-semibold ${
                 idx === 0 ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-500'
               }`}
             >
@@ -115,9 +113,9 @@ function renderComponentContent(comp: ComponentItem) {
 
     case 'list':
       return (
-        <div className="divide-y divide-slate-200">
-          {(comp.items || ['항목 1', '항목 2']).map((item, idx) => (
-            <div key={idx} className="py-2.5 px-2 text-xs flex items-center justify-between text-slate-700">
+        <div className="divide-y divide-slate-200 border border-slate-200 bg-white">
+          {(comp.items || ['1', '2', '3']).map((item, idx) => (
+            <div key={idx} className="py-2 px-2 text-xs flex items-center justify-between text-slate-700">
               <span className="font-medium">{item}</span>
               <span className="text-slate-400">›</span>
             </div>
@@ -149,28 +147,28 @@ function renderComponentContent(comp: ComponentItem) {
 
     case 'colorBlock':
       return (
-        <div className="w-full rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-white">
+        <div className="w-full border border-slate-200 bg-white">
           <div
-            className="px-3.5 py-2 text-white text-xs font-bold flex items-center justify-between"
+            className="px-3 py-1.5 text-white text-xs font-bold flex items-center justify-between"
             style={{ backgroundColor: comp.headerColor || '#9333ea' }}
           >
             <span>{comp.label || '섹션 블록'}</span>
             <span className="text-[10px] opacity-80">⋮</span>
           </div>
-          <div className="p-3 text-xs text-slate-700 whitespace-pre-line leading-relaxed font-sans">
-            {comp.content || '내용을 입력하세요.'}
+          <div className="p-2.5 text-xs text-slate-700 whitespace-pre-line leading-relaxed font-sans">
+            {comp.content || '1. 첫 번째 내용\n2. 두 번째 내용\n3. 세 번째 내용'}
           </div>
         </div>
       );
 
     case 'chipGroup': {
-      const cols = comp.columns || 4;
+      const cols = comp.columns || 3;
       return (
         <div
           className="grid gap-1 p-0 w-full"
           style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
         >
-          {(comp.items || ['메뉴1', '메뉴2']).map((chip, idx) => {
+          {(comp.items || ['1', '2', '3']).map((chip, idx) => {
             const colors = [
               'bg-amber-100 text-amber-800 border-amber-300',
               'bg-emerald-100 text-emerald-800 border-emerald-300',
@@ -183,7 +181,7 @@ function renderComponentContent(comp: ComponentItem) {
             return (
               <span
                 key={idx}
-                className={`w-full py-1.5 px-1 rounded-md text-[11px] font-semibold border shadow-xs text-center truncate flex items-center justify-center ${colorClass}`}
+                className={`w-full py-1.5 px-1 text-[11px] font-semibold border text-center truncate flex items-center justify-center ${colorClass}`}
                 title={chip}
               >
                 {chip}
@@ -196,7 +194,7 @@ function renderComponentContent(comp: ComponentItem) {
 
     case 'categoryList':
       return (
-        <div className="w-full space-y-1">
+        <div className="w-full space-y-0.5">
           {comp.label && (
             <div className="flex items-center justify-between text-xs font-bold text-slate-700 pb-1 mb-1 border-b border-slate-200">
               <span>{comp.label}</span>
@@ -204,10 +202,10 @@ function renderComponentContent(comp: ComponentItem) {
             </div>
           )}
           <div className="space-y-0.5">
-            {(comp.items || ['카테고리 1']).map((item, idx) => (
+            {(comp.items || ['1', '2', '3']).map((item, idx) => (
               <div
                 key={idx}
-                className={`px-2 py-1.5 rounded-lg text-xs flex items-center justify-between hover:bg-slate-100 cursor-pointer ${
+                className={`px-2 py-1 text-xs flex items-center justify-between hover:bg-slate-100 cursor-pointer ${
                   idx === 0 ? 'bg-blue-50 text-blue-800 font-semibold' : 'text-slate-700'
                 }`}
               >
@@ -221,18 +219,18 @@ function renderComponentContent(comp: ComponentItem) {
 
     case 'checklist':
       return (
-        <div className="w-full rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-white">
+        <div className="w-full border border-slate-200 bg-white">
           <div
-            className="px-3.5 py-2 text-white text-xs font-bold flex items-center justify-between"
+            className="px-3 py-1.5 text-white text-xs font-bold flex items-center justify-between"
             style={{ backgroundColor: comp.headerColor || '#16a34a' }}
           >
             <span>{comp.label || '체크리스트'}</span>
             <span className="text-xs font-bold cursor-pointer">+ 항목 추가</span>
           </div>
-          <div className="p-2 divide-y divide-slate-100">
-            {(comp.items || ['체크 항목 1']).map((item, idx) => (
-              <label key={idx} className="flex items-center gap-2 py-2 px-1 text-xs text-slate-700 cursor-pointer">
-                <input type="checkbox" defaultChecked={idx === 0} className="rounded text-emerald-600 cursor-pointer" />
+          <div className="p-1 divide-y divide-slate-100">
+            {(comp.items || ['1', '2', '3']).map((item, idx) => (
+              <label key={idx} className="flex items-center gap-2 py-1.5 px-1 text-xs text-slate-700 cursor-pointer">
+                <input type="checkbox" defaultChecked={idx === 0} className="text-emerald-600 cursor-pointer" />
                 <span className={idx === 0 ? 'line-through text-slate-400' : ''}>{item}</span>
               </label>
             ))}
@@ -242,13 +240,13 @@ function renderComponentContent(comp: ComponentItem) {
 
     case 'quickInput':
       return (
-        <div className="flex items-center gap-1.5 w-full">
+        <div className="flex items-center gap-1 w-full">
           <input
             type="text"
             placeholder={comp.placeholder || '입력...'}
-            className="flex-1 px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:border-blue-500 shadow-sm"
+            className="flex-1 px-2.5 py-1.5 text-xs bg-white border border-slate-300 text-slate-800 focus:outline-none focus:border-blue-500"
           />
-          <button className="px-3 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm whitespace-nowrap">
+          <button className="px-3 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap">
             {comp.label || '+ 추가'}
           </button>
         </div>

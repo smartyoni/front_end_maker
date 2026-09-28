@@ -21,7 +21,7 @@
                 "padding": "12px 14px",
                 "fontSize": "13px",
                 "fontWeight": "600",
-                "borderRadius": "8px"
+                "borderRadius": "0px"
               }
             },
             {
@@ -52,7 +52,7 @@
               "styles": {
                 "backgroundColor": "#ffffff",
                 "padding": "10px",
-                "borderRadius": "10px"
+                "borderRadius": "0px"
               }
             }
           ]
@@ -73,7 +73,7 @@
                 "padding": "12px 14px",
                 "fontSize": "14px",
                 "fontWeight": "bold",
-                "borderRadius": "8px"
+                "borderRadius": "0px"
               }
             },
             {
@@ -99,7 +99,7 @@
               "styles": {
                 "backgroundColor": "#ffffff",
                 "padding": "8px",
-                "borderRadius": "8px"
+                "borderRadius": "0px"
               }
             }
           ]
@@ -120,7 +120,7 @@
                 "padding": "14px 16px",
                 "fontSize": "18px",
                 "fontWeight": "bold",
-                "borderRadius": "10px"
+                "borderRadius": "0px"
               }
             },
             {
@@ -132,7 +132,7 @@
               "content": "• 확정일자/주택임대차신고하기: 가양1동 주민센터 (계약서 작성 후 바로 하실수 있습니다)\n• 지방세 체납내역, 국세일자무미현황/전입세대확인 가능\n• 잔금일 전 입주지원센터에 입주증 발급 신청하기\n• 관리실에서 입주자가이드 작성",
               "styles": {
                 "backgroundColor": "#ffffff",
-                "borderRadius": "8px"
+                "borderRadius": "0px"
               }
             },
             {
@@ -144,7 +144,7 @@
               "items": ["신분증 및 계약서 원본 지참", "중도금 대출 승계 신청서 제출", "선수관리비 납부 영수증 확인"],
               "styles": {
                 "backgroundColor": "#ffffff",
-                "borderRadius": "12px"
+                "borderRadius": "0px"
               }
             }
           ]

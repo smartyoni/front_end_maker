@@ -36,8 +36,8 @@ const PALETTE_ITEMS: PaletteItemDef[] = [
       name: '안내문 메모 블록',
       label: '안내문 [확인 사항]',
       headerColor: '#9333ea',
-      content: '• 첫 번째 중요 확인 항목을 작성하세요.\n• 두 번째 상세 내용을 여기에 입력하세요.',
-      styles: { backgroundColor: '#ffffff', borderRadius: '12px' },
+      content: '1. 첫 번째 확인 사항\n2. 두 번째 상세 내용\n3. 세 번째 메모 내용',
+      styles: { backgroundColor: '#ffffff', borderRadius: '0px', padding: '0px' },
     },
   },
   {
@@ -50,8 +50,8 @@ const PALETTE_ITEMS: PaletteItemDef[] = [
       name: '체크리스트 블록',
       label: '체크리스트',
       headerColor: '#16a34a',
-      items: ['신분증 원본 지참', '서류 접수 확인', '최종 검토 완료'],
-      styles: { backgroundColor: '#ffffff', borderRadius: '12px' },
+      items: ['체크 1', '체크 2', '체크 3'],
+      styles: { backgroundColor: '#ffffff', borderRadius: '0px', padding: '0px' },
     },
   },
   {
@@ -62,8 +62,9 @@ const PALETTE_ITEMS: PaletteItemDef[] = [
     defaultData: {
       type: 'chipGroup',
       name: '바로가기 칩 모음',
-      items: ['일정관리', '블로그', '계약자료', '광고', '고객관리'],
-      styles: { padding: '8px 0' },
+      columns: 3,
+      items: ['메뉴 1', '메뉴 2', '메뉴 3'],
+      styles: { padding: '0px', borderRadius: '0px' },
     },
   },
   {
@@ -74,9 +75,9 @@ const PALETTE_ITEMS: PaletteItemDef[] = [
     defaultData: {
       type: 'categoryList',
       name: '카테고리 목록',
-      label: '카테고리 (8)',
-      items: ['계약진행현황 [3]', '서류작성예정 [1]', '완료 보관함 [0]'],
-      styles: { backgroundColor: '#ffffff', padding: '10px', borderRadius: '8px' },
+      label: '카테고리 (3)',
+      items: ['카테고리 1', '카테고리 2', '카테고리 3'],
+      styles: { backgroundColor: '#ffffff', padding: '0px', borderRadius: '0px' },
     },
   },
   {
@@ -87,9 +88,9 @@ const PALETTE_ITEMS: PaletteItemDef[] = [
     defaultData: {
       type: 'quickInput',
       name: '인라인 추가바',
-      placeholder: '새 체크리스트 항목 입력...',
+      placeholder: '새 항목 입력...',
       label: '+ 추가',
-      styles: { padding: '6px 0' },
+      styles: { padding: '0px', borderRadius: '0px' },
     },
   },
 
@@ -102,8 +103,8 @@ const PALETTE_ITEMS: PaletteItemDef[] = [
     defaultData: {
       type: 'header',
       name: '패널 타이틀',
-      label: '새 패널 타이틀',
-      styles: { backgroundColor: '#ffffff', textColor: '#0f172a', padding: '12px', fontWeight: 'bold' },
+      label: '패널 타이틀',
+      styles: { backgroundColor: '#ffffff', textColor: '#0f172a', padding: '8px', fontWeight: 'bold', borderRadius: '0px' },
     },
   },
   {
@@ -116,7 +117,7 @@ const PALETTE_ITEMS: PaletteItemDef[] = [
       name: '버튼',
       label: '실행 버튼',
       variant: 'primary',
-      styles: { backgroundColor: '#2563eb', textColor: '#ffffff', padding: '10px 16px', borderRadius: '8px', fullWidth: true },
+      styles: { backgroundColor: '#2563eb', textColor: '#ffffff', padding: '8px 12px', borderRadius: '0px', fullWidth: true },
     },
   },
   {
@@ -129,7 +130,7 @@ const PALETTE_ITEMS: PaletteItemDef[] = [
       name: '입력 필드',
       label: '항목명',
       placeholder: '내용을 입력하세요...',
-      styles: { padding: '8px 12px', borderRadius: '8px' },
+      styles: { padding: '6px 8px', borderRadius: '0px' },
     },
   },
   {
@@ -141,8 +142,8 @@ const PALETTE_ITEMS: PaletteItemDef[] = [
       type: 'card',
       name: '카드',
       label: '안내 카드',
-      content: '여기에 카드 세부 내용을 입력하세요.',
-      styles: { backgroundColor: '#ffffff', padding: '14px', borderRadius: '10px' },
+      content: '카드 세부 내용입니다.',
+      styles: { backgroundColor: '#ffffff', padding: '8px', borderRadius: '0px' },
     },
   },
   {
@@ -153,8 +154,8 @@ const PALETTE_ITEMS: PaletteItemDef[] = [
     defaultData: {
       type: 'tabs',
       name: '탭 메뉴',
-      items: ['전체', '진행중', '완료'],
-      styles: { padding: '8px' },
+      items: ['탭 1', '탭 2', '탭 3'],
+      styles: { padding: '0px', borderRadius: '0px' },
     },
   },
   {
@@ -165,8 +166,8 @@ const PALETTE_ITEMS: PaletteItemDef[] = [
     defaultData: {
       type: 'list',
       name: '아이템 목록',
-      items: ['계약서작성 후 안내문', '계약서작성_준비사항', '주의사항 안내'],
-      styles: { backgroundColor: '#ffffff', padding: '8px', borderRadius: '8px' },
+      items: ['항목 1', '항목 2', '항목 3'],
+      styles: { backgroundColor: '#ffffff', padding: '0px', borderRadius: '0px' },
     },
   },
   {
