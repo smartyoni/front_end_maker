@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { ComponentItem, Screen, PanelLayoutPreset } from '../types/builder';
 import { INITIAL_SCREENS } from '../utils/defaultTemplates';
 
@@ -31,8 +32,10 @@ interface CanvasStore {
   redo: () => void;
 }
 
-export const useCanvasStore = create<CanvasStore>((set, get) => ({
-  screens: INITIAL_SCREENS,
+export const useCanvasStore = create<CanvasStore>()(
+  persist(
+    (set, get) => ({
+      screens: INITIAL_SCREENS,
   activeScreenId: INITIAL_SCREENS[0].id,
   selectedPanelId: INITIAL_SCREENS[0].panels[0].id,
   selectedComponentId: INITIAL_SCREENS[0].panels[0].components[0]?.id || null,
@@ -266,14 +269,25 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
     });
   },
 
-  redo: () => {
-    const { history, future, screens } = get();
-    if (future.length === 0) return;
-    const next = future[0];
-    set({
-      screens: next,
-      history: [...history, screens],
-      future: future.slice(1),
-    });
-  },
-}));
+      redo: () => {
+        const { history, future, screens } = get();
+        if (future.length === 0) return;
+        const next = future[0];
+        set({
+          screens: next,
+          history: [...history, screens],
+          future: future.slice(1),
+        });
+      },
+    }),
+    {
+      name: 'app-design-canvas-state',
+      partialize: (state) => ({
+        screens: state.screens,
+        activeScreenId: state.activeScreenId,
+        selectedPanelId: state.selectedPanelId,
+        selectedComponentId: state.selectedComponentId,
+      }),
+    }
+  )
+);
