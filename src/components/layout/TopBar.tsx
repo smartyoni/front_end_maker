@@ -148,6 +148,23 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenExport }) => {
         </button>
 
         <button
+          onClick={() => {
+            const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify({ updatedAt: new Date().toISOString(), screens }, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute('href', dataStr);
+            downloadAnchor.setAttribute('download', 'current-design.json');
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+          }}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition"
+          title="안티그래비티 MCP 서버에서 읽을 수 있는 current-design.json 파일로 저장합니다."
+        >
+          <Code className="w-3.5 h-3.5" />
+          <span>디자인 JSON 저장</span>
+        </button>
+
+        <button
           onClick={onOpenExport}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-600/20 transition"
         >
