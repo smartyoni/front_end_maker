@@ -1,0 +1,111 @@
+import React from 'react';
+import { useCanvasStore } from '../../store/canvasStore';
+import { StyleSection } from './StyleSection';
+import { ActionSection } from './ActionSection';
+import { Trash2, Sliders } from 'lucide-react';
+
+export const PropertyInspector: React.FC = () => {
+  const { screens, activeScreenId, selectedComponentId, updateComponent, deleteComponent } = useCanvasStore();
+
+  const currentScreen = screens.find((s) => s.id === activeScreenId);
+  const selectedComponent = currentScreen?.components.find((c) => c.id === selectedComponentId);
+
+  if (!selectedComponent) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center text-slate-500">
+        <Sliders className="w-8 h-8 mb-2 opacity-50" />
+        <p className="text-xs">선택된 컴포넌트가 없습니다.</p>
+        <p className="text-[11px] text-slate-600 mt-1">캔버스에서 컴포넌트를 클릭해 속성을 편집하세요.</p>
+      </div>
+    );
+  }
+
+  const handleUpdate = (updates: any) => {
+    updateComponent(selectedComponent.id, updates);
+  };
+
+  return (
+    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      {/* 컴포넌트 기본 정보 헤더 */}
+      <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400">
+            {selectedComponent.type}
+          </span>
+          <h3 className="text-sm font-bold text-white truncate max-w-[170px]">
+            {selectedComponent.name || selectedComponent.label}
+          </h3>
+        </div>
+        <button
+          onClick={() => deleteComponent(selectedComponent.id)}
+          className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800 transition"
+          title="컴포넌트 삭제"
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* 기본 텍스트 및 속성 */}
+      <div className="space-y-3">
+        {selectedComponent.label !== undefined && (
+          <div>
+            <label className="text-xs text-slate-400 block mb-1">라벨 / 텍스트</label>
+            <input
+              type="text"
+              value={selectedComponent.label}
+              onChange={(e) => handleUpdate({ label: e.target.value })}
+              className="w-full px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+            />
+          </div>
+        )}
+
+        {selectedComponent.placeholder !== undefined && (
+          <div>
+            <label className="text-xs text-slate-400 block mb-1">플레이스홀더 안내문</label>
+            <input
+              type="text"
+              value={selectedComponent.placeholder}
+              onChange={(e) => handleUpdate({ placeholder: e.target.value })}
+              className="w-full px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs text-slate-200"
+            />
+          </div>
+        )}
+
+        {selectedComponent.content !== undefined && (
+          <div>
+            <label className="text-xs text-slate-400 block mb-1">본문 설명 문구</label>
+            <textarea
+              rows={3}
+              value={selectedComponent.content}
+              onChange={(e) => handleUpdate({ content: e.target.value })}
+              className="w-full px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs text-slate-200 resize-none"
+            />
+          </div>
+        )}
+
+        {/* 탭/목록 아이템 쉼표 구분 편집 */}
+        {selectedComponent.items !== undefined && (
+          <div>
+            <label className="text-xs text-slate-400 block mb-1">하위 항목 (쉼표로 구분)</label>
+            <input
+              type="text"
+              value={selectedComponent.items.join(', ')}
+              onChange={(e) =>
+                handleUpdate({
+                  items: e.target.value.split(',').map((s) => s.trim()).filter(Boolean),
+                })
+              }
+              className="w-full px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs text-slate-200"
+            />
+          </div>
+        )}
+      </div>
+
+      {/* 스타일 편집 분리 컴포넌트 */}
+      <StyleSection component={selectedComponent} onUpdate={handleUpdate} />
+
+      {/* 액션/인터랙션 편집 분리 컴포넌트 */}
+      <ActionSection component={selectedComponent} onUpdate={handleUpdate} />
+    </div>
+  );
+};
