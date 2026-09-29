@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { PlusCircle, Layers } from 'lucide-react';
+import { PlusCircle, Sparkles } from 'lucide-react';
 import { ComponentPalette } from '../palette/ComponentPalette';
-import { LayerTree } from '../tree/LayerTree';
+import { IdeasWorkspaceTab } from './IdeasWorkspaceTab';
 
 export const LeftSidebar: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'palette' | 'tree'>('palette');
+  const [activeTab, setActiveTab] = useState<'palette' | 'ideas'>('palette');
 
   return (
     <aside className="w-72 bg-white border-r border-slate-200 flex flex-col h-full shrink-0 z-10 shadow-sm">
@@ -19,23 +19,23 @@ export const LeftSidebar: React.FC = () => {
           }`}
         >
           <PlusCircle className="w-3.5 h-3.5" />
-          <span>컴포넌트 도구함</span>
+          <span>도구함</span>
         </button>
         <button
-          onClick={() => setActiveTab('tree')}
+          onClick={() => setActiveTab('ideas')}
           className={`flex-1 py-3 flex items-center justify-center gap-1.5 text-xs font-semibold border-b-2 transition ${
-            activeTab === 'tree'
+            activeTab === 'ideas'
               ? 'border-blue-600 text-blue-600 bg-white'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
-          <Layers className="w-3.5 h-3.5" />
-          <span>레이어 트리</span>
+          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+          <span>확장 구상함</span>
         </button>
       </div>
 
       {/* 탭 내용 영역 */}
-      {activeTab === 'palette' ? <ComponentPalette /> : <LayerTree />}
+      {activeTab === 'palette' ? <ComponentPalette /> : <IdeasWorkspaceTab />}
     </aside>
   );
 };
