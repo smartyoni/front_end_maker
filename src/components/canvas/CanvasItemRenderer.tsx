@@ -162,13 +162,18 @@ function renderComponentContent(comp: ComponentItem) {
       );
 
     case 'chipGroup': {
-      const cols = comp.columns || 3;
+      const cols = comp.columns || 4;
+      const rows = comp.rows || (comp.items ? Math.ceil(comp.items.length / cols) : 2);
+      const total = cols * rows;
+      const items = comp.items && comp.items.length === total
+        ? comp.items
+        : Array.from({ length: total }, (_, i) => String(i + 1));
       return (
         <div
           className="grid gap-1 p-0 w-full"
           style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
         >
-          {(comp.items || ['1', '2', '3']).map((chip, idx) => {
+          {items.map((chip, idx) => {
             const colors = [
               'bg-amber-100 text-amber-800 border-amber-300',
               'bg-emerald-100 text-emerald-800 border-emerald-300',

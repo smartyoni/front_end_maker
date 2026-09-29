@@ -62,8 +62,9 @@ const PALETTE_ITEMS: PaletteItemDef[] = [
     defaultData: {
       type: 'chipGroup',
       name: '바로가기 칩 모음',
-      columns: 3,
-      items: ['메뉴 1', '메뉴 2', '메뉴 3'],
+      columns: 4,
+      rows: 2,
+      items: ['1', '2', '3', '4', '5', '6', '7', '8'],
       styles: { padding: '0px', borderRadius: '0px' },
     },
   },

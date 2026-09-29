@@ -37,7 +37,6 @@ export const StyleSection: React.FC<StyleSectionProps> = ({ component, onUpdate 
             <input
               type="text"
               value={styles.backgroundColor || ''}
-              placeholder="#ffffff"
               onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
               className="w-full px-2 py-1 bg-slate-50 border border-slate-300 text-xs text-slate-800"
             />
@@ -57,7 +56,6 @@ export const StyleSection: React.FC<StyleSectionProps> = ({ component, onUpdate 
             <input
               type="text"
               value={styles.textColor || ''}
-              placeholder="#1e293b"
               onChange={(e) => handleStyleChange('textColor', e.target.value)}
               className="w-full px-2 py-1 bg-slate-50 border border-slate-300 text-xs text-slate-800"
             />

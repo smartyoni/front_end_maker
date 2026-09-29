@@ -86,7 +86,6 @@ export const ActionSection: React.FC<ActionSectionProps> = ({ component, onUpdat
           <input
             type="text"
             value={action.toastMessage || ''}
-            placeholder="예: 저장이 완료되었습니다!"
             onChange={(e) => handleToastMsgChange(e.target.value)}
             className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-md text-xs text-slate-800"
           />

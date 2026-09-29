@@ -58,8 +58,13 @@ function generateComponentJSX(comp: ComponentItem): string {
 
     case 'chipGroup': {
       const cols = comp.columns || 4;
-      return `<div className="grid gap-1.5 p-1 w-full" style={{ gridTemplateColumns: 'repeat(${cols}, minmax(0, 1fr))' }}>
-          ${(comp.items || []).map((chip) => `<span className="w-full py-1.5 px-1 rounded-md text-[11px] font-semibold border bg-slate-100 text-slate-800 text-center truncate flex items-center justify-center shadow-xs">${chip}</span>`).join('\n          ')}
+      const rows = comp.rows || (comp.items ? Math.ceil(comp.items.length / cols) : 2);
+      const total = cols * rows;
+      const items = comp.items && comp.items.length === total
+        ? comp.items
+        : Array.from({ length: total }, (_, i) => String(i + 1));
+      return `<div className="grid gap-1 p-0 w-full" style={{ gridTemplateColumns: 'repeat(${cols}, minmax(0, 1fr))' }}>
+          ${items.map((chip) => `<span className="w-full py-1.5 px-1 text-[11px] font-semibold border bg-slate-100 text-slate-800 text-center truncate flex items-center justify-center">${chip}</span>`).join('\n          ')}
         </div>`;
     }
 
