@@ -16,6 +16,8 @@ export interface GlobalUxSettings {
 }
 
 interface GlobalSettingsStore {
+  activeLeftTab: 'palette' | 'settings';
+  setActiveLeftTab: (tab: 'palette' | 'settings') => void;
   settings: GlobalUxSettings;
   updateSettings: (updates: Partial<GlobalUxSettings>) => void;
   resetSettings: () => void;
@@ -78,6 +80,9 @@ ${settings.customGlobalPrompt.trim()}`);
 export const useGlobalSettingsStore = create<GlobalSettingsStore>()(
   persist(
     (set, get) => ({
+      activeLeftTab: 'palette',
+      setActiveLeftTab: (tab) => set({ activeLeftTab: tab }),
+
       settings: DEFAULT_GLOBAL_SETTINGS,
 
       updateSettings: (updates) => {

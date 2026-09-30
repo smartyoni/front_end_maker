@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PlusCircle, Sliders } from 'lucide-react';
 import { ComponentPalette } from '../palette/ComponentPalette';
 import { CommonSettingsTab } from './CommonSettingsTab';
+import { useGlobalSettingsStore } from '../../store/globalSettingsStore';
 
 export const LeftSidebar: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'palette' | 'settings'>('palette');
+  const { activeLeftTab, setActiveLeftTab } = useGlobalSettingsStore();
 
   return (
     <aside className="w-72 bg-white border-r border-slate-200 flex flex-col h-full shrink-0 z-10 shadow-sm">
       {/* 탭 헤더 (도구함 / 공통설정) */}
       <div className="flex border-b border-slate-200 bg-slate-50/50">
         <button
-          onClick={() => setActiveTab('palette')}
+          onClick={() => setActiveLeftTab('palette')}
           className={`flex-1 py-2.5 flex items-center justify-center gap-1.5 text-xs font-semibold border-b-2 transition ${
-            activeTab === 'palette'
+            activeLeftTab === 'palette'
               ? 'border-blue-600 text-blue-600 bg-white font-bold'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
@@ -23,9 +24,9 @@ export const LeftSidebar: React.FC = () => {
           <span>도구함</span>
         </button>
         <button
-          onClick={() => setActiveTab('settings')}
+          onClick={() => setActiveLeftTab('settings')}
           className={`flex-1 py-2.5 flex items-center justify-center gap-1.5 text-xs font-semibold border-b-2 transition ${
-            activeTab === 'settings'
+            activeLeftTab === 'settings'
               ? 'border-blue-600 text-blue-600 bg-white font-bold'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
@@ -37,8 +38,8 @@ export const LeftSidebar: React.FC = () => {
       </div>
 
       {/* 탭 내용 영역 */}
-      {activeTab === 'palette' && <ComponentPalette />}
-      {activeTab === 'settings' && <CommonSettingsTab />}
+      {activeLeftTab === 'palette' && <ComponentPalette />}
+      {activeLeftTab === 'settings' && <CommonSettingsTab />}
     </aside>
   );
 };

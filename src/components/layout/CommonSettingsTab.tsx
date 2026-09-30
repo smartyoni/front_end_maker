@@ -1,31 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Copy,
-  Check,
-  RotateCcw,
   Trash2,
   Edit3,
   Terminal,
   Keyboard,
+  ArrowRight,
 } from 'lucide-react';
 import { useGlobalSettingsStore } from '../../store/globalSettingsStore';
 
 export const CommonSettingsTab: React.FC = () => {
-  const { settings, updateSettings, resetSettings, getGeneratedGlobalPrompt } =
-    useGlobalSettingsStore();
-  const [copied, setCopied] = useState(false);
-
-  const promptText = getGeneratedGlobalPrompt();
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(promptText);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const { settings, updateSettings } = useGlobalSettingsStore();
 
   return (
     <div className="flex-1 overflow-y-auto p-3 space-y-3 bg-slate-50/50 text-slate-800">
-
       {/* 1. 삭제 인터랙션 설정 */}
       <div className="p-2.5 bg-white border border-slate-200 rounded-lg shadow-xs space-y-2">
         <div className="flex items-center gap-1.5 text-xs font-bold text-red-600">
@@ -149,7 +136,7 @@ export const CommonSettingsTab: React.FC = () => {
       <div className="p-2.5 bg-white border border-slate-200 rounded-lg shadow-xs space-y-1.5">
         <div className="text-xs font-bold text-slate-800">추가 공통 프롬프트 메모</div>
         <textarea
-          rows={2}
+          rows={3}
           value={settings.customGlobalPrompt}
           onChange={(e) => updateSettings({ customGlobalPrompt: e.target.value })}
           placeholder="모든 컴포넌트 프롬프트에 추가할 나만의 공통 규칙을 적어보세요..."
@@ -157,47 +144,17 @@ export const CommonSettingsTab: React.FC = () => {
         />
       </div>
 
-      {/* 4. 자동 생성된 프로젝트 공통 바이브코딩 프롬프트 */}
-      <div className="space-y-1.5 pt-1">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-700">
-            <Terminal className="w-3.5 h-3.5" />
-            <span>생성된 공통 프롬프트</span>
+      {/* 4. 5번 패널 실시간 연동 안내 카드 */}
+      <div className="p-2.5 bg-indigo-50/80 border border-indigo-200 rounded-lg text-xs space-y-1">
+        <div className="flex items-center justify-between font-bold text-indigo-900">
+          <div className="flex items-center gap-1.5">
+            <Terminal className="w-3.5 h-3.5 text-indigo-600" />
+            <span>프롬프트 박스 (5번 패널 연동)</span>
           </div>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => {
-                if (confirm('공통 설정을 기본값으로 초기화하시겠습니까?')) {
-                  resetSettings();
-                }
-              }}
-              className="p-1 text-slate-400 hover:text-slate-600 rounded transition"
-              title="설정 초기화"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={handleCopy}
-              className={`flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded border transition ${
-                copied
-                  ? 'bg-emerald-50 text-emerald-600 border-emerald-300'
-                  : 'bg-white text-indigo-600 border-indigo-200 hover:bg-indigo-50'
-              }`}
-            >
-              {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-              <span>{copied ? '복사됨!' : '공통 프롬프트 복사'}</span>
-            </button>
-          </div>
+          <ArrowRight className="w-3.5 h-3.5 text-indigo-500" />
         </div>
-
-        <textarea
-          readOnly
-          value={promptText}
-          rows={8}
-          className="w-full p-2 bg-slate-900 text-slate-200 border border-slate-700 rounded text-[11px] font-mono leading-relaxed outline-none resize-none"
-        />
-        <p className="text-[10px] text-slate-400">
-          AI 코딩 도구(Cursor 등)에 프로젝트 규칙(Rules)이나 프롬프트 서두로 전달하는 공통 가이드입니다.
+        <p className="text-[11px] text-indigo-700 leading-tight">
+          여기서 변경한 모든 설정이 우측 <strong>5번 패널(프롬프트 박스)</strong>에 실시간 자동 반영됩니다.
         </p>
       </div>
     </div>
