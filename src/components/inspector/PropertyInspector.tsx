@@ -116,6 +116,17 @@ export const PropertyInspector: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* 메모용 텍스트박스 */}
+        <div>
+          <textarea
+            rows={2}
+            value={selectedComponent.functionNote || ''}
+            onChange={(e) => handleUpdate({ functionNote: e.target.value })}
+            placeholder="메모를 입력하세요..."
+            className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white resize-none transition"
+          />
+        </div>
       </div>
 
       {/* 3. 남은 공간을 모두 프롬프트에 제공 (flex-1) */}
