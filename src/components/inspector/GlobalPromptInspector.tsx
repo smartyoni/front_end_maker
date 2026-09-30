@@ -3,7 +3,7 @@ import { Terminal, Copy, Check, RotateCcw, Sliders } from 'lucide-react';
 import { useGlobalSettingsStore } from '../../store/globalSettingsStore';
 
 export const GlobalPromptInspector: React.FC = () => {
-  const { resetSettings, getGeneratedGlobalPrompt } = useGlobalSettingsStore();
+  const { resetRules, getGeneratedGlobalPrompt } = useGlobalSettingsStore();
   const [copied, setCopied] = useState(false);
 
   const promptText = getGeneratedGlobalPrompt();
@@ -21,15 +21,15 @@ export const GlobalPromptInspector: React.FC = () => {
         <div className="flex items-center gap-1.5 min-w-0 mr-2">
           <Terminal className="w-4 h-4 text-indigo-600 shrink-0" />
           <h3 className="text-xs font-bold text-slate-800 truncate">
-            프로젝트 공통 바이브 프롬프트
+            프로젝트 공통 바이브 프롬프트 (확정본)
           </h3>
         </div>
 
         <div className="flex items-center gap-1 shrink-0">
           <button
             onClick={() => {
-              if (confirm('공통 설정을 기본값으로 초기화하시겠습니까?')) {
-                resetSettings();
+              if (confirm('모든 공통 규칙과 프롬프트를 기본값으로 초기화하시겠습니까?')) {
+                resetRules();
               }
             }}
             className="p-1 text-slate-400 hover:text-slate-600 rounded transition"

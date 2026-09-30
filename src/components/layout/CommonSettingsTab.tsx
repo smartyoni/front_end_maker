@@ -1,161 +1,185 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Trash2,
   Edit3,
+  ArrowUpDown,
+  MoreVertical,
+  Link2,
+  HelpCircle,
+  Sparkles,
+  RotateCcw,
   Terminal,
-  Keyboard,
-  ArrowRight,
 } from 'lucide-react';
-import { useGlobalSettingsStore } from '../../store/globalSettingsStore';
+import { useGlobalSettingsStore, CommonRuleItem } from '../../store/globalSettingsStore';
 
 export const CommonSettingsTab: React.FC = () => {
-  const { settings, updateSettings } = useGlobalSettingsStore();
+  const {
+    rules,
+    toggleRule,
+    reorderRules,
+    resetRules,
+    customGlobalPrompt,
+    setCustomGlobalPrompt,
+  } = useGlobalSettingsStore();
+
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
+
+  const enabledCount = rules.filter((r) => r.enabled).length;
+
+  const handleDragStart = (id: string, e: React.DragEvent) => {
+    e.dataTransfer.setData('text/plain', id);
+    setDraggedId(id);
+  };
+
+  const handleDragOver = (id: string, e: React.DragEvent) => {
+    e.preventDefault();
+    if (dragOverId !== id) {
+      setDragOverId(id);
+    }
+  };
+
+  const handleDrop = (targetId: string) => {
+    if (draggedId && draggedId !== targetId) {
+      reorderRules(draggedId, targetId);
+    }
+    setDraggedId(null);
+    setDragOverId(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedId(null);
+    setDragOverId(null);
+  };
+
+  const renderIcon = (iconName: CommonRuleItem['iconName']) => {
+    switch (iconName) {
+      case 'trash':
+        return <Trash2 className="w-3.5 h-3.5 text-red-600" />;
+      case 'edit':
+        return <Edit3 className="w-3.5 h-3.5 text-blue-600" />;
+      case 'drag':
+        return <ArrowUpDown className="w-3.5 h-3.5 text-emerald-600" />;
+      case 'menu':
+        return <MoreVertical className="w-3.5 h-3.5 text-purple-600" />;
+      case 'link':
+        return <Link2 className="w-3.5 h-3.5 text-sky-600" />;
+      case 'empty':
+        return <HelpCircle className="w-3.5 h-3.5 text-amber-600" />;
+      case 'style':
+      default:
+        return <Sparkles className="w-3.5 h-3.5 text-indigo-600" />;
+    }
+  };
 
   return (
-    <div className="flex-1 overflow-y-auto p-3 space-y-3 bg-slate-50/50 text-slate-800">
-      {/* 1. 삭제 인터랙션 설정 */}
-      <div className="p-2.5 bg-white border border-slate-200 rounded-lg shadow-xs space-y-2">
-        <div className="flex items-center gap-1.5 text-xs font-bold text-red-600">
-          <Trash2 className="w-3.5 h-3.5" />
-          <span>삭제 확인 및 팝오버 규격</span>
+    <div className="flex-1 overflow-y-auto p-2.5 space-y-2.5 text-slate-800">
+      {/* 상단 헤더: 항목 수 & 조작 안내 & 초기화 */}
+      <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between pb-1 border-b border-slate-200">
+        <div className="flex items-center gap-1.5">
+          <span>공통 규격 항목 ({enabledCount}/{rules.length})</span>
         </div>
-
-        {/* 팝업 위치 옵션 */}
-        <div className="space-y-1.5 pt-1">
-          <label
-            onClick={() => updateSettings({ deleteConfirmStyle: 'nearPopover' })}
-            className={`flex items-start gap-2 p-2 rounded border cursor-pointer transition ${
-              settings.deleteConfirmStyle === 'nearPopover'
-                ? 'bg-blue-50/50 border-blue-400'
-                : 'bg-white border-slate-200 hover:bg-slate-50'
-            }`}
-          >
-            <input
-              type="radio"
-              name="deleteConfirmStyle"
-              checked={settings.deleteConfirmStyle === 'nearPopover'}
-              onChange={() => updateSettings({ deleteConfirmStyle: 'nearPopover' })}
-              className="mt-0.5"
-            />
-            <div>
-              <div className="text-xs font-semibold text-slate-800">
-                버튼 근처 초근접 팝오버 (추천 ⭐)
-              </div>
-              <p className="text-[10px] text-slate-500 leading-tight">
-                삭제 버튼 바로 옆에 말풍선 형태로 떠 마우스 이동을 최소화합니다.
-              </p>
-            </div>
-          </label>
-
-          <label
-            onClick={() => updateSettings({ deleteConfirmStyle: 'modal' })}
-            className={`flex items-start gap-2 p-2 rounded border cursor-pointer transition ${
-              settings.deleteConfirmStyle === 'modal'
-                ? 'bg-blue-50/50 border-blue-400'
-                : 'bg-white border-slate-200 hover:bg-slate-50'
-            }`}
-          >
-            <input
-              type="radio"
-              name="deleteConfirmStyle"
-              checked={settings.deleteConfirmStyle === 'modal'}
-              onChange={() => updateSettings({ deleteConfirmStyle: 'modal' })}
-              className="mt-0.5"
-            />
-            <div>
-              <div className="text-xs font-semibold text-slate-800">화면 중앙 확인 모달</div>
-              <p className="text-[10px] text-slate-500 leading-tight">
-                화면 정중앙에 팝업되는 전통적인 확인 모달창입니다.
-              </p>
-            </div>
-          </label>
-        </div>
-
-        {/* Enter 키 즉시 삭제 체크박스 */}
-        <div className="pt-1 border-t border-slate-100">
-          <label className="flex items-center gap-2 text-xs cursor-pointer select-none text-slate-700">
-            <input
-              type="checkbox"
-              checked={settings.deleteEnterKeyConfirm}
-              onChange={(e) => updateSettings({ deleteEnterKeyConfirm: e.target.checked })}
-              className="rounded text-blue-600 focus:ring-0"
-            />
-            <span className="flex items-center gap-1 font-medium">
-              <Keyboard className="w-3.5 h-3.5 text-slate-500" />
-              <span>확인 팝업 시 `Enter` 키로 즉시 삭제</span>
-            </span>
-          </label>
-        </div>
-      </div>
-
-      {/* 2. 편집 & 인터랙션 설정 */}
-      <div className="p-2.5 bg-white border border-slate-200 rounded-lg shadow-xs space-y-2">
-        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
-          <Edit3 className="w-3.5 h-3.5 text-indigo-600" />
-          <span>편집 및 데이터 조작 규격</span>
-        </div>
-
-        <div className="space-y-1.5 text-xs">
-          <label className="flex items-center gap-2 cursor-pointer select-none text-slate-700">
-            <input
-              type="checkbox"
-              checked={settings.inlineEditTrigger === 'doubleClick'}
-              onChange={(e) =>
-                updateSettings({
-                  inlineEditTrigger: e.target.checked ? 'doubleClick' : 'menuOnly',
-                })
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] text-slate-400 font-normal">드래그: 순서 이동</span>
+          <button
+            onClick={() => {
+              if (confirm('모든 공통 규칙 설정을 기본값으로 초기화하시겠습니까?')) {
+                resetRules();
               }
-              className="rounded text-blue-600"
-            />
-            <span className="font-medium">더블클릭 인라인 텍스트 수정 허용</span>
-          </label>
-
-          <label className="flex items-center gap-2 cursor-pointer select-none text-slate-700">
-            <input
-              type="checkbox"
-              checked={settings.dragAndDropReorder}
-              onChange={(e) => updateSettings({ dragAndDropReorder: e.target.checked })}
-              className="rounded text-blue-600"
-            />
-            <span className="font-medium">행 자체 드래그 앤 드롭 정렬 (핸들 없이 드래그)</span>
-          </label>
-
-          <label className="flex items-center gap-2 cursor-pointer select-none text-slate-700">
-            <input
-              type="checkbox"
-              checked={settings.autoLinkDetect}
-              onChange={(e) => updateSettings({ autoLinkDetect: e.target.checked })}
-              className="rounded text-blue-600"
-            />
-            <span className="font-medium">URL 하이퍼링크 및 휴대폰 번호 SMS 자동 연결</span>
-          </label>
+            }}
+            className="p-1 text-slate-400 hover:text-slate-700 rounded transition"
+            title="기본 규칙으로 초기화"
+          >
+            <RotateCcw className="w-3 h-3" />
+          </button>
         </div>
       </div>
 
-      {/* 3. 추가 공통 프롬프트 메모 */}
-      <div className="p-2.5 bg-white border border-slate-200 rounded-lg shadow-xs space-y-1.5">
-        <div className="text-xs font-bold text-slate-800">추가 공통 프롬프트 메모</div>
+      {/* 도구함과 동일한 규격의 컴포넌트 리스트 뷰 */}
+      <div className="space-y-1">
+        {rules.map((rule) => {
+          const isDragging = draggedId === rule.id;
+          const isDragOver = dragOverId === rule.id && !isDragging;
+
+          return (
+            <div
+              key={rule.id}
+              draggable
+              onDragStart={(e) => handleDragStart(rule.id, e)}
+              onDragOver={(e) => handleDragOver(rule.id, e)}
+              onDrop={() => handleDrop(rule.id)}
+              onDragEnd={handleDragEnd}
+              onClick={() => toggleRule(rule.id)}
+              className={`w-full flex items-center justify-between px-2.5 py-1.5 bg-white border cursor-pointer select-none transition group ${
+                isDragging
+                  ? 'opacity-30 border-dashed border-blue-500 bg-blue-50/40'
+                  : isDragOver
+                  ? 'border-blue-500 ring-2 ring-blue-400 ring-offset-1 bg-blue-50/20'
+                  : rule.enabled
+                  ? 'border-slate-200 hover:border-blue-400 hover:bg-blue-50/30'
+                  : 'border-slate-200 bg-slate-50/60 opacity-60 hover:opacity-90'
+              }`}
+              title="클릭: 활성화/해제 토글 / 드래그: 순서 이동"
+            >
+              <div className="flex items-center gap-2 min-w-0 flex-1 mr-2">
+                <div
+                  className={`p-1 border shrink-0 transition ${
+                    rule.enabled
+                      ? 'border-slate-200 bg-slate-50 group-hover:bg-white'
+                      : 'border-slate-200 bg-slate-100 text-slate-400'
+                  }`}
+                >
+                  {renderIcon(rule.iconName)}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <span
+                    className={`text-xs font-bold block truncate leading-tight ${
+                      rule.enabled ? 'text-slate-800' : 'text-slate-400 line-through'
+                    }`}
+                  >
+                    {rule.title}
+                  </span>
+                  <span className="text-[10px] text-slate-400 block truncate leading-tight mt-0.5">
+                    {rule.description}
+                  </span>
+                </div>
+              </div>
+
+              {/* 토글 상태 뱃지 */}
+              <div className="shrink-0 flex items-center">
+                <span
+                  className={`text-[9px] font-bold px-1.5 py-0.5 rounded transition ${
+                    rule.enabled
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-slate-200 text-slate-500'
+                  }`}
+                >
+                  {rule.enabled ? 'ON' : 'OFF'}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* 사용자 추가 규칙 메모 */}
+      <div className="pt-2 border-t border-slate-200 space-y-1">
+        <span className="text-[11px] font-bold text-slate-600">추가 특별 규칙 (메모)</span>
         <textarea
-          rows={3}
-          value={settings.customGlobalPrompt}
-          onChange={(e) => updateSettings({ customGlobalPrompt: e.target.value })}
-          placeholder="모든 컴포넌트 프롬프트에 추가할 나만의 공통 규칙을 적어보세요..."
+          rows={2}
+          value={customGlobalPrompt}
+          onChange={(e) => setCustomGlobalPrompt(e.target.value)}
+          placeholder="프로젝트 공통 프롬프트에 추가할 커스텀 지침 입력..."
           className="w-full p-2 bg-slate-50 border border-slate-200 rounded text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white resize-none"
         />
       </div>
 
-      {/* 4. 5번 패널 실시간 연동 안내 카드 */}
-      <div className="p-2.5 bg-indigo-50/80 border border-indigo-200 rounded-lg text-xs space-y-1">
-        <div className="flex items-center justify-between font-bold text-indigo-900">
-          <div className="flex items-center gap-1.5">
-            <Terminal className="w-3.5 h-3.5 text-indigo-600" />
-            <span>프롬프트 박스 (5번 패널 연동)</span>
-          </div>
-          <ArrowRight className="w-3.5 h-3.5 text-indigo-500" />
-        </div>
-        <p className="text-[11px] text-indigo-700 leading-tight">
-          여기서 변경한 모든 설정이 우측 <strong>5번 패널(프롬프트 박스)</strong>에 실시간 자동 반영됩니다.
-        </p>
+      {/* 5번 패널 연동 가이드 */}
+      <div className="p-2 bg-indigo-50/70 border border-indigo-200 rounded text-xs flex items-center gap-1.5 text-indigo-900 leading-tight">
+        <Terminal className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+        <span className="text-[11px]">
+          위 리스트에서 ON된 규칙들이 <strong>5번 패널</strong>의 완성본 프롬프트로 확정됩니다.
+        </span>
       </div>
     </div>
   );
