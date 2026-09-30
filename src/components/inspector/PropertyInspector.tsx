@@ -191,7 +191,7 @@ export const PropertyInspector: React.FC = () => {
         {/* 요소 기능 및 개발 스펙 메모란 */}
         <div className="pt-2 border-t border-slate-200">
           <label className="text-xs font-bold text-blue-700 block mb-1 flex items-center justify-between">
-            <span>📝 요소 기능 & 개발 메모</span>
+            <span>요소 기능 및 개발 메모</span>
             <span className="text-[10px] text-slate-400 font-normal">안티그래비티 참고용</span>
           </label>
           <textarea

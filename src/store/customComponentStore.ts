@@ -25,7 +25,7 @@ const DEFAULT_CUSTOM_PRESETS: CustomComponentPreset[] = [
     component: {
       type: 'colorBlock',
       name: '업무 체크 메모',
-      label: '📌 주간 주요 점검 사항',
+      label: '주간 주요 점검 사항',
       headerColor: '#8b5cf6',
       content: '1. 신규 컴포넌트 규격 검토\n2. 사용자 피드백 반영 및 배포\n3. 인스펙터 연동 테스트',
       functionNote: '사용자가 자유롭게 메모를 남기고 화면 설계 의도를 공유하는 블록',

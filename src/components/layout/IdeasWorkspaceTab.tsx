@@ -51,7 +51,7 @@ export const IdeasWorkspaceTab: React.FC = () => {
       </div>
 
       <div className="p-2.5 bg-amber-50/60 border border-amber-200 text-[11px] text-amber-900 leading-relaxed">
-        💡 이 탭에 넣고 싶은 구상이 정리되면 언제든 말씀해주세요! 바로 구현해 드립니다.
+        [안내] 이 탭에 넣고 싶은 구상이 정리되면 언제든 말씀해주세요! 바로 구현해 드립니다.
       </div>
     </div>
   );
