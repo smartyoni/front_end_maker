@@ -8,7 +8,7 @@
 
 ## 2. 배포 환경 (Deployment)
 * **플랫폼**: Vercel
-* **Production 배포 URL**: _(추후 입력 예정)_
+* **Production 배포 URL**: `https://frontendmaker.vercel.app`
 * **Preview 배포 URL**: _(필요 시 기입)_
 
 ## 3. 백엔드 및 서비스 (Firebase)
