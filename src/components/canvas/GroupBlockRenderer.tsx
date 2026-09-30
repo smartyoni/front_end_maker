@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { ComponentItem } from '../../types/builder';
 import { useCanvasStore } from '../../store/canvasStore';
+import { RichTextItem } from './RichTextItem';
 
 interface GroupBlockRendererProps {
   component: ComponentItem;
@@ -229,26 +230,22 @@ export const GroupBlockRenderer: React.FC<GroupBlockRendererProps> = ({
                   draggedIndex === idx ? 'opacity-40 bg-blue-50' : ''
                 }`}
               >
-                <div className="flex items-center gap-2 flex-1 min-w-0" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-start gap-2 flex-1 min-w-0 py-0.5" onClick={(e) => e.stopPropagation()}>
                   {/* 체크리스트용 체크박스 */}
                   {isChecklist && (
                     <input
                       type="checkbox"
                       checked={isChecked}
                       onChange={() => handleToggleCheck(idx)}
-                      className="rounded border-slate-300 text-emerald-600 focus:ring-0 cursor-pointer w-3.5 h-3.5 shrink-0"
+                      className="mt-1 rounded border-slate-300 text-emerald-600 focus:ring-0 cursor-pointer w-3.5 h-3.5 shrink-0"
                     />
                   )}
 
-                  {/* 텍스트 입력창 (인라인 편집) */}
-                  <input
-                    type="text"
-                    value={item}
-                    placeholder="(빈 항목)"
-                    onChange={(e) => handleItemChange(idx, e.target.value)}
-                    className={`flex-1 text-xs bg-transparent border-none outline-none py-0.5 px-1 focus:bg-white focus:ring-1 focus:ring-blue-400 rounded ${
-                      isChecked ? 'line-through text-slate-400' : 'text-slate-800'
-                    }`}
+                  {/* 줄바꿈, URL 하이퍼링크, 전화번호 SMS 연동 리치 텍스트 항목 */}
+                  <RichTextItem
+                    text={item}
+                    onChange={(val) => handleItemChange(idx, val)}
+                    isChecked={isChecked}
                   />
                 </div>
 
