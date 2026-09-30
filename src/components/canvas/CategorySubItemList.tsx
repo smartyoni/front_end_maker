@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, GripVertical, Check, FolderOpen } from 'lucide-react';
+import { Plus, Check, FolderOpen, MoreVertical, Edit2, Trash2, X } from 'lucide-react';
 
 interface CategorySubItemListProps {
   activeTabName: string;
@@ -22,6 +22,7 @@ export const CategorySubItemList: React.FC<CategorySubItemListProps> = ({
   const [draggedSubIndex, setDraggedSubIndex] = useState<number | null>(null);
   const [editingSubIndex, setEditingSubIndex] = useState<number | null>(null);
   const [editingSubText, setEditingSubText] = useState('');
+  const [menuOpenIndex, setMenuOpenIndex] = useState<number | null>(null);
 
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,12 +32,25 @@ export const CategorySubItemList: React.FC<CategorySubItemListProps> = ({
     setNewSubInput('');
   };
 
+  const handleStartEdit = (idx: number, text: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setEditingSubIndex(idx);
+    setEditingSubText(text);
+    setMenuOpenIndex(null);
+  };
+
   const handleSave = (idx: number) => {
     const trimmed = editingSubText.trim();
     if (trimmed) {
       onUpdateSubItem(idx, trimmed);
     }
     setEditingSubIndex(null);
+  };
+
+  const handleDelete = (idx: number, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    onDeleteSubItem(idx);
+    setMenuOpenIndex(null);
   };
 
   const handleDrop = (targetIdx: number) => {
@@ -83,21 +97,22 @@ export const CategorySubItemList: React.FC<CategorySubItemListProps> = ({
         <div className="space-y-1 max-h-48 overflow-y-auto">
           {subItems.map((subItem, sIdx) => {
             const isSubDragging = sIdx === draggedSubIndex;
+            const isMenuOpen = menuOpenIndex === sIdx;
+
             return (
               <div
                 key={sIdx}
-                draggable
+                draggable={editingSubIndex !== sIdx}
                 onDragStart={() => setDraggedSubIndex(sIdx)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDrop(sIdx)}
-                className={`flex items-center justify-between px-2 py-1 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs text-slate-700 group transition ${
+                className={`relative flex items-center justify-between px-2.5 py-1.5 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs text-slate-700 transition ${
                   isSubDragging ? 'opacity-40 border-dashed border-blue-400' : ''
                 }`}
               >
                 <div className="flex items-center gap-1.5 flex-1 min-w-0 mr-2">
-                  <GripVertical className="w-3 h-3 text-slate-400 cursor-grab shrink-0" />
                   {editingSubIndex === sIdx ? (
-                    <div className="flex items-center gap-1 flex-1">
+                    <div className="flex items-center gap-1 flex-1" onClick={(e) => e.stopPropagation()}>
                       <input
                         type="text"
                         value={editingSubText}
@@ -108,32 +123,77 @@ export const CategorySubItemList: React.FC<CategorySubItemListProps> = ({
                           if (e.key === 'Escape') setEditingSubIndex(null);
                         }}
                         onBlur={() => handleSave(sIdx)}
-                        className="w-full text-xs px-1 py-0.5 bg-white border border-blue-500 rounded outline-none"
+                        className="w-full text-xs px-1.5 py-0.5 bg-white border border-blue-500 rounded outline-none"
                       />
-                      <button onClick={() => handleSave(sIdx)} className="text-emerald-600">
-                        <Check className="w-3 h-3" />
+                      <button
+                        onClick={() => handleSave(sIdx)}
+                        className="p-0.5 text-emerald-600 hover:text-emerald-700"
+                        title="저장"
+                      >
+                        <Check className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   ) : (
                     <span
-                      onDoubleClick={() => {
-                        setEditingSubIndex(sIdx);
-                        setEditingSubText(subItem);
-                      }}
-                      className="truncate cursor-pointer hover:text-blue-600"
-                      title="더블클릭하여 수정"
+                      onDoubleClick={(e) => handleStartEdit(sIdx, subItem, e)}
+                      className="truncate cursor-pointer hover:text-blue-600 font-medium"
+                      title="더블클릭 또는 우측 3점 메뉴로 수정"
                     >
                       {subItem}
                     </span>
                   )}
                 </div>
-                <button
-                  onClick={() => onDeleteSubItem(sIdx)}
-                  className="p-0.5 text-slate-400 hover:text-red-500 opacity-60 group-hover:opacity-100 transition shrink-0"
-                  title="항목 삭제"
-                >
-                  <Trash2 className="w-3 h-3" />
-                </button>
+
+                {/* 우측 3점 메뉴 (수정, 삭제, 취소) */}
+                <div className="relative shrink-0">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMenuOpenIndex(isMenuOpen ? null : sIdx);
+                    }}
+                    className={`p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition ${
+                      isMenuOpen ? 'text-slate-800 bg-slate-200' : ''
+                    }`}
+                    title="항목 메뉴"
+                  >
+                    <MoreVertical className="w-3.5 h-3.5" />
+                  </button>
+
+                  {/* 3점 메뉴 팝업 */}
+                  {isMenuOpen && (
+                    <div
+                      className="absolute right-0 top-6 z-30 bg-white text-slate-700 shadow-lg border border-slate-200 py-1 w-24 rounded text-[11px] font-medium"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <button
+                        type="button"
+                        onClick={(e) => handleStartEdit(sIdx, subItem, e)}
+                        className="w-full px-2.5 py-1 text-left hover:bg-slate-100 flex items-center gap-1.5"
+                      >
+                        <Edit2 className="w-3 h-3 text-slate-500" />
+                        <span>수정</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => handleDelete(sIdx, e)}
+                        className="w-full px-2.5 py-1 text-left hover:bg-red-50 text-red-600 flex items-center gap-1.5"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                        <span>삭제</span>
+                      </button>
+                      <div className="border-t border-slate-100 my-0.5" />
+                      <button
+                        type="button"
+                        onClick={() => setMenuOpenIndex(null)}
+                        className="w-full px-2.5 py-1 text-left hover:bg-slate-100 text-slate-400 flex items-center gap-1.5"
+                      >
+                        <X className="w-3 h-3" />
+                        <span>취소</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}
