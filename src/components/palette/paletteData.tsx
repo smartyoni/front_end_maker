@@ -15,6 +15,7 @@ import {
   Compass,
 } from 'lucide-react';
 import { ComponentItem, ComponentType } from '../../types/builder';
+import { DEFAULT_VIBE_PROMPTS } from '../inspector/VibePromptSection';
 
 export type PaletteCategory = 'all' | 'memo' | 'nav' | 'action' | 'data';
 
@@ -54,6 +55,7 @@ export const PALETTE_ITEMS: PaletteItemDef[] = [
       label: '텍스트 그룹',
       headerColor: '#5ea578',
       items: [''],
+      vibePrompt: DEFAULT_VIBE_PROMPTS.textGroup,
       styles: { backgroundColor: '#ffffff', borderRadius: '0px', padding: '0px' },
     },
   },
@@ -70,6 +72,7 @@ export const PALETTE_ITEMS: PaletteItemDef[] = [
       headerColor: '#5ea578',
       items: [''],
       checkedItems: [false],
+      vibePrompt: DEFAULT_VIBE_PROMPTS.checklist,
       styles: { backgroundColor: '#ffffff', borderRadius: '0px', padding: '0px' },
     },
   },
@@ -107,6 +110,7 @@ export const PALETTE_ITEMS: PaletteItemDef[] = [
         '0': ['전체 공지사항 확인', '중요 일정 체크'],
         '1': ['프로젝트 기획서 초안', '회의록 정리'],
       },
+      vibePrompt: DEFAULT_VIBE_PROMPTS.chipGroup,
       styles: { padding: '0px', borderRadius: '0px' },
     },
   },

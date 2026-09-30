@@ -1,4 +1,5 @@
 import { Screen } from '../types/builder';
+import { DEFAULT_VIBE_PROMPTS } from '../components/inspector/VibePromptSection';
 
 export const INITIAL_SCREENS: Screen[] = [
   {
@@ -37,6 +38,7 @@ export const INITIAL_SCREENS: Screen[] = [
               '0': ['주요 일정 및 계약 체크', '공지사항 확인'],
               '1': ['기획서 검토', '회의록 작성'],
             },
+            vibePrompt: DEFAULT_VIBE_PROMPTS.chipGroup,
             styles: {
               padding: '0px',
             },

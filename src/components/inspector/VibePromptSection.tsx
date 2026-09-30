@@ -7,7 +7,7 @@ interface VibePromptSectionProps {
   onUpdate: (updates: Partial<ComponentItem>) => void;
 }
 
-const DEFAULT_VIBE_PROMPTS: Record<string, string> = {
+export const DEFAULT_VIBE_PROMPTS: Record<string, string> = {
   textGroup: `[React + Tailwind CSS 컴포넌트 구현 프롬프트]
 - 컴포넌트명: 아웃라이너형 텍스트박스 그룹 (TextGroup)
 - 레이아웃 및 기능 스펙:
@@ -51,6 +51,32 @@ const DEFAULT_VIBE_PROMPTS: Record<string, string> = {
        * [취소]: 3점 메뉴 닫기
   3. 스타일:
      - 상단 헤더 배경색(#5ea578 세이지 그린), 테두리 border-slate-300, 텍스트 크기 text-xs 기반의 컴팩트한 비즈니스 툴 스타일.`,
+
+  chipGroup: `[React + Tailwind CSS 컴포넌트 구현 프롬프트]
+- 컴포넌트명: 네비게이션 탭 그리드 (NavigationTabGrid / CategoryTabGrid)
+- 역할: 최상위 카테고리 탭 탐색 및 선택된 탭별 하위 항목(Sub-items) 생성·관리
+- 레이아웃 및 기능 스펙:
+  1. 상단 라벨 및 안내 바:
+     - 태그 아이콘(Tag)과 컴포넌트명('네비게이션 탭') 표시.
+     - 우측에 인터랙션 안내 힌트('더블클릭: 이름 수정 / 드래그: 순서 변경') 제공.
+  2. 네비게이션 탭 그리드:
+     - 열(columns, 기본 4열) 및 행(rows, 기본 2행) 격자 균등 배치(grid-cols-N).
+     - 탭 클릭 시 활성 탭(Active Tab) 전환: 파란색 테마(bg-blue-600, text-white, border-blue-700, ring-1 ring-blue-400).
+     - 비활성 탭: 깔끔한 화이트/연회색 카드 스타일(hover:bg-slate-100).
+     - 각 탭에 등록된 하위 항목 개수를 표시하는 카운트 뱃지 노출.
+     - 탭 이름 인라인 수정: 탭을 더블클릭하면 인라인 input이 열려 이름 변경 (Enter, 확인 버튼, onBlur 저장 지원).
+     - 탭 드래그 앤 드롭(HTML5 Drag & Drop): 탭을 드래그하여 순서 재배치 지원. 탭 이동 시 해당 탭의 하위 항목 데이터도 함께 안전하게 동기화 이동.
+  3. 선택된 탭의 하위 항목(Sub-items) 관리 패널:
+     - 상단 그리드 바로 아래에 밀착 결합된 카드 형태로 렌더링.
+     - 헤더: 폴더 아이콘(FolderOpen) + 현재 선택된 탭 이름('선택된 탭' 하위 항목) 및 총 개수 뱃지 표시.
+     - 항목 추가 인풋: 텍스트 입력 후 Enter 또는 [+ 추가] 버튼 클릭 시 해당 탭의 하위 항목으로 등록.
+     - 하위 항목 목록:
+       * 좌측 드래그 핸들(GripVertical)로 항목 간 상하 드래그 앤 드롭 순서 변경.
+       * 더블클릭 시 인라인 input으로 항목 텍스트 수정.
+       * 우측에 삭제(Trash2) 버튼 배치.
+       * 하위 항목이 없을 때 빈 상태 안내 문구 노출.
+  4. 스타일:
+     - Tailwind CSS 기반 컴팩트 비즈니스 도구 디자인, border-slate-300, 텍스트 text-xs 기반의 정밀한 레이아웃.`,
 };
 
 export const VibePromptSection: React.FC<VibePromptSectionProps> = ({
@@ -62,7 +88,7 @@ export const VibePromptSection: React.FC<VibePromptSectionProps> = ({
   // textGroup과 checklist는 기본 프롬프트가 존재함. 다른 컴포넌트는 빈 값.
   const defaultPrompt = DEFAULT_VIBE_PROMPTS[component.type] || '';
   const currentPrompt =
-    component.vibePrompt !== undefined
+    component.vibePrompt !== undefined && component.vibePrompt.trim() !== ''
       ? component.vibePrompt
       : defaultPrompt;
 
