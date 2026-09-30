@@ -6,7 +6,6 @@ interface RichTextItemProps {
   placeholder?: string;
   isChecked?: boolean;
   isEditing?: boolean;
-  onStartEdit?: () => void;
   onEndEdit?: () => void;
 }
 
@@ -20,7 +19,6 @@ export const RichTextItem: React.FC<RichTextItemProps> = ({
   placeholder = '(빈 블록)',
   isChecked = false,
   isEditing: externalIsEditing,
-  onStartEdit,
   onEndEdit,
 }) => {
   const [internalEditing, setInternalEditing] = useState(false);
@@ -117,14 +115,9 @@ export const RichTextItem: React.FC<RichTextItemProps> = ({
 
   return (
     <div
-      onClick={() => {
-        setInternalEditing(true);
-        onStartEdit?.();
-      }}
-      className={`w-full text-xs py-1 px-1 rounded hover:bg-white/80 cursor-text whitespace-pre-wrap leading-relaxed select-text min-h-[24px] ${
+      className={`w-full text-xs py-1 px-1 rounded whitespace-pre-wrap leading-relaxed select-text min-h-[24px] ${
         isChecked ? 'line-through text-slate-400' : 'text-slate-800'
       }`}
-      title="클릭하여 줄바꿈 및 내용 수정"
     >
       {renderFormattedText(text)}
     </div>

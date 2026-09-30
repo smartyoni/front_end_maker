@@ -81,7 +81,6 @@ export const GroupBlockRow: React.FC<GroupBlockRowProps> = ({
         <RichTextItem
           text={item}
           isEditing={isEditing}
-          onStartEdit={() => setIsEditing(true)}
           onEndEdit={() => setIsEditing(false)}
           onChange={(val) => onItemChange(idx, val)}
           isChecked={isChecked}
@@ -89,56 +88,69 @@ export const GroupBlockRow: React.FC<GroupBlockRowProps> = ({
         />
       </div>
 
-      {/* 우측 3점 메뉴 [⋮] 버튼 및 팝업 */}
-      <div className="relative shrink-0 ml-1.5 mt-0.5" onClick={(e) => e.stopPropagation()}>
+      {/* 편집 중일 때는 [완료] 버튼, 평상시에는 [⋮] 3점 메뉴 */}
+      {isEditing ? (
         <button
           type="button"
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition"
-          title="블록 메뉴"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsEditing(false);
+          }}
+          className="px-2 py-0.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-[11px] font-bold shrink-0 ml-1.5 mt-0.5 shadow-xs"
         >
-          <MoreVertical className="w-3.5 h-3.5" />
+          완료
         </button>
+      ) : (
+        <div className="relative shrink-0 ml-1.5 mt-0.5" onClick={(e) => e.stopPropagation()}>
+          <button
+            type="button"
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition"
+            title="블록 메뉴"
+          >
+            <MoreVertical className="w-3.5 h-3.5" />
+          </button>
 
-        {/* 3점 메뉴 드롭다운 (수정, 복사, 삭제, 취소) */}
-        {menuOpen && (
-          <div className="absolute right-0 top-6 z-30 bg-white text-slate-700 shadow-lg border border-slate-200 py-1 w-24 text-[11px] font-medium">
-            <button
-              type="button"
-              onClick={handleStartEdit}
-              className="w-full px-2 py-1 text-left hover:bg-slate-100 flex items-center gap-1.5"
-            >
-              <Edit2 className="w-3 h-3 text-blue-600" />
-              <span>수정</span>
-            </button>
-            <button
-              type="button"
-              onClick={handleCopyText}
-              className="w-full px-2 py-1 text-left hover:bg-slate-100 flex items-center gap-1.5"
-            >
-              {copied ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3 text-slate-600" />}
-              <span>{copied ? '복사됨' : '복사'}</span>
-            </button>
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="w-full px-2 py-1 text-left hover:bg-red-50 text-red-600 flex items-center gap-1.5"
-            >
-              <Trash2 className="w-3 h-3" />
-              <span>삭제</span>
-            </button>
-            <div className="border-t border-slate-100 my-0.5" />
-            <button
-              type="button"
-              onClick={() => setMenuOpen(false)}
-              className="w-full px-2 py-1 text-left hover:bg-slate-100 text-slate-400 flex items-center gap-1.5"
-            >
-              <X className="w-3 h-3" />
-              <span>취소</span>
-            </button>
-          </div>
-        )}
-      </div>
+          {/* 3점 메뉴 드롭다운 (수정, 복사, 삭제, 취소) */}
+          {menuOpen && (
+            <div className="absolute right-0 top-6 z-30 bg-white text-slate-700 shadow-lg border border-slate-200 py-1 w-24 text-[11px] font-medium">
+              <button
+                type="button"
+                onClick={handleStartEdit}
+                className="w-full px-2 py-1 text-left hover:bg-slate-100 flex items-center gap-1.5"
+              >
+                <Edit2 className="w-3 h-3 text-blue-600" />
+                <span>수정</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleCopyText}
+                className="w-full px-2 py-1 text-left hover:bg-slate-100 flex items-center gap-1.5"
+              >
+                {copied ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3 text-slate-600" />}
+                <span>{copied ? '복사됨' : '복사'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="w-full px-2 py-1 text-left hover:bg-red-50 text-red-600 flex items-center gap-1.5"
+              >
+                <Trash2 className="w-3 h-3" />
+                <span>삭제</span>
+              </button>
+              <div className="border-t border-slate-100 my-0.5" />
+              <button
+                type="button"
+                onClick={() => setMenuOpen(false)}
+                className="w-full px-2 py-1 text-left hover:bg-slate-100 text-slate-400 flex items-center gap-1.5"
+              >
+                <X className="w-3 h-3" />
+                <span>취소</span>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
