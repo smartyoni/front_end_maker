@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Sliders,
   Copy,
   Check,
   RotateCcw,
@@ -25,30 +24,7 @@ export const CommonSettingsTab: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto p-3 space-y-3.5 bg-slate-50/50 text-slate-800">
-      {/* 탭 헤더 */}
-      <div className="pb-2 border-b border-slate-200">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 font-bold text-xs text-slate-800">
-            <Sliders className="w-4 h-4 text-blue-600" />
-            <span>바이브코딩 공통 설정</span>
-          </div>
-          <button
-            onClick={() => {
-              if (confirm('공통 설정을 기본값으로 되돌리시겠습니까?')) {
-                resetSettings();
-              }
-            }}
-            className="p-1 text-slate-400 hover:text-slate-600 rounded transition"
-            title="기본 설정으로 초기화"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-          </button>
-        </div>
-        <p className="text-[11px] text-slate-500 mt-0.5">
-          모든 컴포넌트에 일괄 적용되는 핵심 인터랙션 규칙을 설정합니다.
-        </p>
-      </div>
+    <div className="flex-1 overflow-y-auto p-3 space-y-3 bg-slate-50/50 text-slate-800">
 
       {/* 1. 삭제 인터랙션 설정 */}
       <div className="p-2.5 bg-white border border-slate-200 rounded-lg shadow-xs space-y-2">
@@ -188,17 +164,30 @@ export const CommonSettingsTab: React.FC = () => {
             <Terminal className="w-3.5 h-3.5" />
             <span>생성된 공통 프롬프트</span>
           </div>
-          <button
-            onClick={handleCopy}
-            className={`flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded border transition ${
-              copied
-                ? 'bg-emerald-50 text-emerald-600 border-emerald-300'
-                : 'bg-white text-indigo-600 border-indigo-200 hover:bg-indigo-50'
-            }`}
-          >
-            {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-            <span>{copied ? '복사됨!' : '공통 프롬프트 복사'}</span>
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => {
+                if (confirm('공통 설정을 기본값으로 초기화하시겠습니까?')) {
+                  resetSettings();
+                }
+              }}
+              className="p-1 text-slate-400 hover:text-slate-600 rounded transition"
+              title="설정 초기화"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={handleCopy}
+              className={`flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded border transition ${
+                copied
+                  ? 'bg-emerald-50 text-emerald-600 border-emerald-300'
+                  : 'bg-white text-indigo-600 border-indigo-200 hover:bg-indigo-50'
+              }`}
+            >
+              {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+              <span>{copied ? '복사됨!' : '공통 프롬프트 복사'}</span>
+            </button>
+          </div>
         </div>
 
         <textarea
