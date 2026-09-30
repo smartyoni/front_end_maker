@@ -71,11 +71,11 @@ export const VibePromptSection: React.FC<VibePromptSectionProps> = ({
   };
 
   return (
-    <div className="pt-3 border-t border-slate-200 space-y-2">
-      <div className="flex items-center justify-between">
+    <div className="flex-1 flex flex-col min-h-0 pt-2 border-t border-slate-200 space-y-1.5">
+      <div className="flex items-center justify-between shrink-0">
         <label className="text-xs font-bold text-indigo-700 flex items-center gap-1.5">
           <Terminal className="w-3.5 h-3.5" />
-          <span>바이브코딩 프롬프트 (Vibe Coding)</span>
+          <span>바이브코딩 프롬프트</span>
         </label>
         <div className="flex items-center gap-1">
           {defaultPrompt && (
@@ -103,18 +103,17 @@ export const VibePromptSection: React.FC<VibePromptSectionProps> = ({
         </div>
       </div>
 
-      <div className="relative">
+      <div className="flex-1 min-h-0 flex flex-col">
         <textarea
-          rows={7}
           value={currentPrompt}
           onChange={(e) => onUpdate({ vibePrompt: e.target.value })}
           placeholder="이 컴포넌트를 AI 코딩 도구(Cursor, Antigravity 등)에 전달하여 바로 구현할 수 있는 프롬프트를 기록하세요..."
-          className="w-full p-2.5 bg-slate-900 text-slate-200 border border-slate-700 rounded text-[11px] font-mono leading-relaxed outline-none focus:ring-1 focus:ring-indigo-500 resize-y"
+          className="w-full flex-1 min-h-[140px] p-2.5 bg-slate-900 text-slate-200 border border-slate-700 rounded text-[11px] font-mono leading-relaxed outline-none focus:ring-1 focus:ring-indigo-500 resize-none"
         />
       </div>
 
-      <p className="text-[10px] text-slate-400 leading-tight">
-        AI 도구에 그대로 복사·붙여넣기하여 실제 프로덕션 코드로 즉시 생성할 수 있는 프롬프트입니다.
+      <p className="text-[10px] text-slate-400 leading-tight shrink-0 pb-1">
+        AI 코딩 도구에 복사·붙여넣기하여 코드로 구현하는 프롬프트입니다.
       </p>
     </div>
   );
