@@ -5,7 +5,6 @@ import {
   Folder,
   Plus,
   MoreVertical,
-  GripVertical,
   Check,
   Edit2,
   Trash2,
@@ -107,22 +106,18 @@ export const GroupBlockRenderer: React.FC<GroupBlockRendererProps> = ({
 
   return (
     <div className="w-full border border-slate-300 bg-white select-none">
-      {/* 1. 그룹 헤더 */}
+      {/* 1. 그룹 헤더: 헤더 전체 클릭 시 접힘/펼침 */}
       <div
-        className="px-2 py-1.5 text-white flex items-center justify-between text-xs font-semibold relative"
+        onClick={() => {
+          if (!isEditingTitle) setIsOpen(!isOpen);
+        }}
+        className="px-2 py-1.5 text-white flex items-center justify-between text-xs font-semibold relative cursor-pointer select-none"
         style={{ backgroundColor: headerBg }}
       >
         <div className="flex items-center gap-1.5 flex-1 min-w-0">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsOpen(!isOpen);
-            }}
-            className="p-0.5 hover:bg-black/10 rounded transition"
-          >
+          <span className="p-0.5 hover:bg-black/10 rounded transition shrink-0">
             {isOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
-          </button>
+          </span>
           <Folder className="w-3.5 h-3.5 shrink-0 opacity-90" />
 
           {isEditingTitle ? (
@@ -144,9 +139,12 @@ export const GroupBlockRenderer: React.FC<GroupBlockRendererProps> = ({
             </div>
           ) : (
             <span
-              onDoubleClick={() => setIsEditingTitle(true)}
-              className="truncate flex-1 cursor-pointer font-bold"
-              title="더블클릭하여 이름 수정"
+              onDoubleClick={(e) => {
+                e.stopPropagation();
+                setIsEditingTitle(true);
+              }}
+              className="truncate flex-1 font-bold"
+              title="클릭하여 접기/펼치기, 더블클릭하여 이름 수정"
             >
               {component.label || component.name || (isChecklist ? '체크리스트' : '텍스트 그룹')}
             </span>
@@ -231,15 +229,7 @@ export const GroupBlockRenderer: React.FC<GroupBlockRendererProps> = ({
                   draggedIndex === idx ? 'opacity-40 bg-blue-50' : ''
                 }`}
               >
-                <div className="flex items-center gap-1.5 flex-1 min-w-0" onClick={(e) => e.stopPropagation()}>
-                  {/* 드래그 핸들 */}
-                  <span
-                    className="cursor-grab active:cursor-grabbing text-slate-300 group-hover:text-slate-500 p-0.5 shrink-0"
-                    title="드래그하여 순서 변경"
-                  >
-                    <GripVertical className="w-3.5 h-3.5" />
-                  </span>
-
+                <div className="flex items-center gap-2 flex-1 min-w-0" onClick={(e) => e.stopPropagation()}>
                   {/* 체크리스트용 체크박스 */}
                   {isChecklist && (
                     <input
