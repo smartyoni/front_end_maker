@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { ComponentItem } from '../../types/builder';
 import { useCanvasStore } from '../../store/canvasStore';
-import { RichTextItem } from './RichTextItem';
+import { GroupBlockRow } from './GroupBlockRow';
 
 interface GroupBlockRendererProps {
   component: ComponentItem;
@@ -217,50 +217,22 @@ export const GroupBlockRenderer: React.FC<GroupBlockRendererProps> = ({
       {/* 2. 자식 텍스트 블록 목록 (드래그 앤 드롭 지원) */}
       {isOpen && (
         <div className="divide-y divide-slate-100">
-          {items.map((item, idx) => {
-            const isChecked = isChecklist && !!checkedItems[idx];
-            return (
-              <div
-                key={idx}
-                draggable
-                onDragStart={() => handleDragStart(idx)}
-                onDragOver={handleDragOver}
-                onDrop={() => handleDrop(idx)}
-                className={`flex items-center justify-between px-2 py-1.5 hover:bg-slate-50 transition group ${
-                  draggedIndex === idx ? 'opacity-40 bg-blue-50' : ''
-                }`}
-              >
-                <div className="flex items-start gap-2 flex-1 min-w-0 py-0.5" onClick={(e) => e.stopPropagation()}>
-                  {/* 체크리스트용 체크박스 */}
-                  {isChecklist && (
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={() => handleToggleCheck(idx)}
-                      className="mt-1 rounded border-slate-300 text-emerald-600 focus:ring-0 cursor-pointer w-3.5 h-3.5 shrink-0"
-                    />
-                  )}
-
-                  {/* 줄바꿈, URL 하이퍼링크, 전화번호 SMS 연동 리치 텍스트 항목 */}
-                  <RichTextItem
-                    text={item}
-                    onChange={(val) => handleItemChange(idx, val)}
-                    isChecked={isChecked}
-                  />
-                </div>
-
-                {/* 개별 항목 삭제 버튼 */}
-                <button
-                  type="button"
-                  onClick={(e) => handleDeleteItem(idx, e)}
-                  className="opacity-0 group-hover:opacity-100 p-1 text-slate-300 hover:text-red-500 rounded transition shrink-0"
-                  title="항목 삭제"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </div>
-            );
-          })}
+          {items.map((item, idx) => (
+            <GroupBlockRow
+              key={idx}
+              idx={idx}
+              item={item}
+              isChecked={isChecklist && !!checkedItems[idx]}
+              isChecklist={isChecklist}
+              draggedIndex={draggedIndex}
+              onDragStart={handleDragStart}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              onItemChange={handleItemChange}
+              onToggleCheck={handleToggleCheck}
+              onDeleteItem={handleDeleteItem}
+            />
+          ))}
         </div>
       )}
     </div>
