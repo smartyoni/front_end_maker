@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useCanvasStore } from '../../store/canvasStore';
+import { useCustomComponentStore } from '../../store/customComponentStore';
 import { StyleSection } from './StyleSection';
 import { ActionSection } from './ActionSection';
-import { Trash2, Sliders } from 'lucide-react';
+import { Trash2, Sliders, BookmarkPlus } from 'lucide-react';
+import { CustomComponentModal } from '../palette/CustomComponentModal';
 
 export const PropertyInspector: React.FC = () => {
   const { screens, activeScreenId, selectedComponentId, updateComponent, deleteComponent } = useCanvasStore();
+  const { addPreset } = useCustomComponentStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const currentScreen = screens.find((s) => s.id === activeScreenId);
   const allComponents = currentScreen?.panels.flatMap((p) => p.components) || [];
@@ -37,13 +41,22 @@ export const PropertyInspector: React.FC = () => {
             {selectedComponent.name || selectedComponent.label}
           </h3>
         </div>
-        <button
-          onClick={() => deleteComponent(selectedComponent.id)}
-          className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-slate-100 transition"
-          title="컴포넌트 삭제"
-        >
-          <Trash2 className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 transition border border-blue-200"
+            title="이 설정을 내 도구함에 등록"
+          >
+            <BookmarkPlus className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => deleteComponent(selectedComponent.id)}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-slate-100 transition"
+            title="컴포넌트 삭제"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* 기본 텍스트 및 속성 */}
@@ -195,6 +208,32 @@ export const PropertyInspector: React.FC = () => {
 
       {/* 액션/인터랙션 편집 분리 컴포넌트 */}
       <ActionSection component={selectedComponent} onUpdate={handleUpdate} />
+
+      {/* 내 도구함에 등록 배너 버튼 */}
+      <div className="pt-2">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="w-full flex items-center justify-center gap-1.5 py-2 px-3 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded transition shadow-xs"
+        >
+          <BookmarkPlus className="w-4 h-4" />
+          <span>이 설정을 내 도구함에 등록</span>
+        </button>
+      </div>
+
+      {/* 내 컴포넌트 등록 모달 */}
+      <CustomComponentModal
+        isOpen={isModalOpen}
+        mode="create"
+        initialData={{
+          name: selectedComponent.name || selectedComponent.label || '내 컴포넌트',
+          component: selectedComponent,
+        }}
+        onClose={() => setIsModalOpen(false)}
+        onSave={(presetData) => {
+          addPreset(presetData);
+          alert(`'${presetData.name}' 컴포넌트가 1번 패널 [내 컴포넌트] 도구함에 등록되었습니다.`);
+        }}
+      />
     </div>
   );
 };

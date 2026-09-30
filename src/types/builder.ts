@@ -77,3 +77,13 @@ export interface HistoryState {
   past: Screen[][];
   future: Screen[][];
 }
+
+export interface CustomComponentPreset {
+  id: string;
+  name: string;
+  description?: string;
+  category: string;
+  component: Omit<ComponentItem, 'id'>;
+  createdAt: number;
+  updatedAt: number;
+}
