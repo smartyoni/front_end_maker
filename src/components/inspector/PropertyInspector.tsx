@@ -88,28 +88,53 @@ export const PropertyInspector: React.FC = () => {
           </div>
         )}
 
-        {/* 칩 그룹일 경우 행/열 설정 유지 */}
+        {/* 네비게이션 탭일 경우 행/열 및 탭 관리 */}
         {selectedComponent.type === 'chipGroup' && (
-          <div className="space-y-1.5 p-2 bg-slate-50 border border-slate-200 rounded">
+          <div className="space-y-2 p-2 bg-slate-50 border border-slate-200 rounded">
             <div className="flex items-center justify-between text-[11px] text-slate-600">
-              <span>열 개수</span>
+              <span className="font-semibold">열 개수</span>
               <div className="flex gap-1">
-                {[1, 2, 3, 4, 5].map((col) => (
+                {[2, 3, 4, 5, 6].map((col) => (
                   <button
                     key={col}
                     onClick={() => {
                       const currentRows = selectedComponent.rows || 2;
                       const total = currentRows * col;
-                      const newItems = Array.from({ length: total }, (_, i) => String(i + 1));
+                      const oldItems = selectedComponent.items || [];
+                      const newItems = Array.from({ length: total }, (_, i) => oldItems[i] || `탭 ${i + 1}`);
                       handleUpdate({ columns: col, rows: currentRows, items: newItems });
                     }}
                     className={`px-1.5 py-0.5 rounded text-[10px] font-bold border ${
                       (selectedComponent.columns || 4) === col
                         ? 'bg-blue-600 text-white border-blue-600'
-                        : 'bg-white border-slate-300 text-slate-600'
+                        : 'bg-white border-slate-300 text-slate-600 hover:bg-slate-100'
                     }`}
                   >
                     {col}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center justify-between text-[11px] text-slate-600">
+              <span className="font-semibold">행 개수</span>
+              <div className="flex gap-1">
+                {[1, 2, 3, 4].map((r) => (
+                  <button
+                    key={r}
+                    onClick={() => {
+                      const currentCols = selectedComponent.columns || 4;
+                      const total = r * currentCols;
+                      const oldItems = selectedComponent.items || [];
+                      const newItems = Array.from({ length: total }, (_, i) => oldItems[i] || `탭 ${i + 1}`);
+                      handleUpdate({ columns: currentCols, rows: r, items: newItems });
+                    }}
+                    className={`px-1.5 py-0.5 rounded text-[10px] font-bold border ${
+                      (selectedComponent.rows || 2) === r
+                        ? 'bg-blue-600 text-white border-blue-600'
+                        : 'bg-white border-slate-300 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    {r}
                   </button>
                 ))}
               </div>

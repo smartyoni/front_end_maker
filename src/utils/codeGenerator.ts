@@ -58,13 +58,19 @@ function generateComponentJSX(comp: ComponentItem): string {
 
     case 'chipGroup': {
       const cols = comp.columns || 4;
-      const rows = comp.rows || (comp.items ? Math.ceil(comp.items.length / cols) : 2);
-      const total = cols * rows;
-      const items = comp.items && comp.items.length === total
-        ? comp.items
-        : Array.from({ length: total }, (_, i) => String(i + 1));
-      return `<div className="grid gap-1 p-0 w-full" style={{ gridTemplateColumns: 'repeat(${cols}, minmax(0, 1fr))' }}>
-          ${items.map((chip) => `<span className="w-full py-1.5 px-1 text-[11px] font-semibold border bg-slate-100 text-slate-800 text-center truncate flex items-center justify-center">${chip}</span>`).join('\n          ')}
+      const items = comp.items || ['전체', '업무', '개인', '프로젝트'];
+      const activeIdx = comp.activeTabIndex || 0;
+      const subItems = (comp.subItems && comp.subItems[String(activeIdx)]) || [];
+      return `<div className="w-full border border-slate-300 rounded bg-white overflow-hidden">
+          <div className="p-1.5 grid gap-1 bg-slate-50" style={{ gridTemplateColumns: 'repeat(${cols}, minmax(0, 1fr))' }}>
+            ${items.map((tab, idx) => `<button key={${idx}} className="px-1 py-1.5 rounded text-xs text-center border ${idx === activeIdx ? 'bg-blue-600 text-white font-bold border-blue-700' : 'bg-white text-slate-700 border-slate-300'}">${tab}</button>`).join('\n            ')}
+          </div>
+          <div className="p-2 border-t border-slate-200">
+            <div className="text-xs font-bold text-slate-700 mb-1.5">‘${items[activeIdx] || '카테고리'}’ 하위 항목 (${subItems.length})</div>
+            <div className="space-y-1">
+              ${subItems.map((sub) => `<div className="px-2 py-1 bg-slate-50 border border-slate-200 rounded text-xs text-slate-700">${sub}</div>`).join('\n              ')}
+            </div>
+          </div>
         </div>`;
     }
 

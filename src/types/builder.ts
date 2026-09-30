@@ -44,6 +44,8 @@ export interface ComponentItem {
   headerColor?: string; // 컬러 블록 상단 바 색상 (보라, 초록 등)
   columns?: number; // 칩 메뉴나 그리드의 열(컬럼) 개수
   rows?: number; // 칩 메뉴나 그리드의 행(로우) 개수
+  activeTabIndex?: number; // 카테고리 탭 그리드의 현재 선택된 탭 인덱스
+  subItems?: Record<string, string[]>; // 탭별 하위 항목 목록 (key: 탭 인덱스 또는 탭 이름)
   functionNote?: string; // 각 요소의 상세 기능 및 개발 스펙 메모
   vibePrompt?: string; // AI 바이브코딩용 코드 생성 프롬프트
   action?: ActionConfig;

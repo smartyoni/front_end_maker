@@ -27,10 +27,16 @@ export const INITIAL_SCREENS: Screen[] = [
           {
             id: 'comp-chips',
             type: 'chipGroup',
-            name: '바로가기 메뉴 칩',
+            name: '네비게이션 탭',
+            label: '네비게이션 탭',
             columns: 4,
             rows: 2,
-            items: ['1', '2', '3', '4', '5', '6', '7', '8'],
+            activeTabIndex: 0,
+            items: ['전체', '업무', '개인', '프로젝트', '아이디어', '공부', '취미', '보관함'],
+            subItems: {
+              '0': ['주요 일정 및 계약 체크', '공지사항 확인'],
+              '1': ['기획서 검토', '회의록 작성'],
+            },
             styles: {
               padding: '0px',
             },

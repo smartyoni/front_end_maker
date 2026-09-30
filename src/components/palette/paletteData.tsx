@@ -91,16 +91,22 @@ export const PALETTE_ITEMS: PaletteItemDef[] = [
   // 2. 네비 & 바로가기 메뉴 (Nav & Menu)
   {
     type: 'chipGroup',
-    title: '바로가기 칩 메뉴',
-    description: '행/열 균등 배분 넘버링 칩',
-    icon: <Tag className="w-4 h-4 text-amber-600" />,
+    title: '네비게이션 탭',
+    description: '최상위 카테고리 탭 및 하위 항목 관리',
+    icon: <Tag className="w-4 h-4 text-blue-600" />,
     category: 'nav',
     defaultData: {
       type: 'chipGroup',
-      name: '바로가기 칩 모음',
+      name: '네비게이션 탭',
+      label: '네비게이션 탭',
       columns: 4,
       rows: 2,
-      items: ['1', '2', '3', '4', '5', '6', '7', '8'],
+      activeTabIndex: 0,
+      items: ['전체', '업무', '개인', '프로젝트', '아이디어', '공부', '취미', '보관함'],
+      subItems: {
+        '0': ['전체 공지사항 확인', '중요 일정 체크'],
+        '1': ['프로젝트 기획서 초안', '회의록 정리'],
+      },
       styles: { padding: '0px', borderRadius: '0px' },
     },
   },

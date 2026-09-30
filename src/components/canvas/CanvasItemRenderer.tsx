@@ -2,6 +2,7 @@ import React from 'react';
 import { ComponentItem } from '../../types/builder';
 import { useCanvasStore } from '../../store/canvasStore';
 import { GroupBlockRenderer } from './GroupBlockRenderer';
+import { CategoryTabGrid } from './CategoryTabGrid';
 
 interface CanvasItemRendererProps {
   component: ComponentItem;
@@ -150,41 +151,8 @@ function renderComponentContent(comp: ComponentItem) {
     case 'colorBlock':
       return <GroupBlockRenderer component={comp} isChecklist={false} />;
 
-    case 'chipGroup': {
-      const cols = comp.columns || 4;
-      const rows = comp.rows || (comp.items ? Math.ceil(comp.items.length / cols) : 2);
-      const total = cols * rows;
-      const items = comp.items && comp.items.length === total
-        ? comp.items
-        : Array.from({ length: total }, (_, i) => String(i + 1));
-      return (
-        <div
-          className="grid gap-1 p-0 w-full"
-          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
-        >
-          {items.map((chip, idx) => {
-            const colors = [
-              'bg-amber-100 text-amber-800 border-amber-300',
-              'bg-emerald-100 text-emerald-800 border-emerald-300',
-              'bg-blue-100 text-blue-800 border-blue-300',
-              'bg-purple-100 text-purple-800 border-purple-300',
-              'bg-pink-100 text-pink-800 border-pink-300',
-              'bg-teal-100 text-teal-800 border-teal-300',
-            ];
-            const colorClass = colors[idx % colors.length];
-            return (
-              <span
-                key={idx}
-                className={`w-full py-1.5 px-1 text-[11px] font-semibold border text-center truncate flex items-center justify-center ${colorClass}`}
-                title={chip}
-              >
-                {chip}
-              </span>
-            );
-          })}
-        </div>
-      );
-    }
+    case 'chipGroup':
+      return <CategoryTabGrid component={comp} />;
 
     case 'categoryList':
       return (
