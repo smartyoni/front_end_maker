@@ -45,6 +45,7 @@ export interface ComponentItem {
   columns?: number; // 칩 메뉴나 그리드의 열(컬럼) 개수
   rows?: number; // 칩 메뉴나 그리드의 행(로우) 개수
   functionNote?: string; // 각 요소의 상세 기능 및 개발 스펙 메모
+  vibePrompt?: string; // AI 바이브코딩용 코드 생성 프롬프트
   action?: ActionConfig;
   styles?: {
     backgroundColor?: string;

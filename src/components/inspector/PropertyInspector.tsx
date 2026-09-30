@@ -5,6 +5,7 @@ import { StyleSection } from './StyleSection';
 import { ActionSection } from './ActionSection';
 import { Trash2, Sliders, BookmarkPlus } from 'lucide-react';
 import { CustomComponentModal } from '../palette/CustomComponentModal';
+import { VibePromptSection } from './VibePromptSection';
 
 export const PropertyInspector: React.FC = () => {
   const { screens, activeScreenId, selectedComponentId, updateComponent, deleteComponent } = useCanvasStore();
@@ -219,6 +220,9 @@ export const PropertyInspector: React.FC = () => {
           <span>이 설정을 내 도구함에 등록</span>
         </button>
       </div>
+
+      {/* 바이브코딩 프롬프트 영역 (가장 하단) */}
+      <VibePromptSection component={selectedComponent} onUpdate={handleUpdate} />
 
       {/* 내 컴포넌트 등록 모달 */}
       <CustomComponentModal
