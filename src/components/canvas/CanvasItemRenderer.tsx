@@ -1,6 +1,7 @@
 import React from 'react';
 import { ComponentItem } from '../../types/builder';
 import { useCanvasStore } from '../../store/canvasStore';
+import { GroupBlockRenderer } from './GroupBlockRenderer';
 
 interface CanvasItemRendererProps {
   component: ComponentItem;
@@ -145,21 +146,9 @@ function renderComponentContent(comp: ComponentItem) {
         </div>
       );
 
+    case 'textGroup':
     case 'colorBlock':
-      return (
-        <div className="w-full border border-slate-200 bg-white">
-          <div
-            className="px-3 py-1.5 text-white text-xs font-bold flex items-center justify-between"
-            style={{ backgroundColor: comp.headerColor || '#9333ea' }}
-          >
-            <span>{comp.label || '섹션 블록'}</span>
-            <span className="text-[10px] opacity-80">⋮</span>
-          </div>
-          <div className="p-2.5 text-xs text-slate-700 whitespace-pre-line leading-relaxed font-sans">
-            {comp.content || '1. 첫 번째 내용\n2. 두 번째 내용\n3. 세 번째 내용'}
-          </div>
-        </div>
-      );
+      return <GroupBlockRenderer component={comp} isChecklist={false} />;
 
     case 'chipGroup': {
       const cols = comp.columns || 4;
@@ -223,25 +212,7 @@ function renderComponentContent(comp: ComponentItem) {
       );
 
     case 'checklist':
-      return (
-        <div className="w-full border border-slate-200 bg-white">
-          <div
-            className="px-3 py-1.5 text-white text-xs font-bold flex items-center justify-between"
-            style={{ backgroundColor: comp.headerColor || '#16a34a' }}
-          >
-            <span>{comp.label || '체크리스트'}</span>
-            <span className="text-xs font-bold cursor-pointer">+ 항목 추가</span>
-          </div>
-          <div className="p-1 divide-y divide-slate-100">
-            {(comp.items || ['1', '2', '3']).map((item, idx) => (
-              <label key={idx} className="flex items-center gap-2 py-1.5 px-1 text-xs text-slate-700 cursor-pointer">
-                <input type="checkbox" defaultChecked={idx === 0} className="text-emerald-600 cursor-pointer" />
-                <span className={idx === 0 ? 'line-through text-slate-400' : ''}>{item}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      );
+      return <GroupBlockRenderer component={comp} isChecklist={true} />;
 
     case 'quickInput':
       return (

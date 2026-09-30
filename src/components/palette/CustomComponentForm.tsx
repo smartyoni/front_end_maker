@@ -19,13 +19,13 @@ interface CustomComponentFormProps {
 }
 
 const AVAILABLE_TYPES: { type: ComponentType; label: string }[] = [
-  { type: 'colorBlock', label: '컬러 메모 블록' },
+  { type: 'textGroup', label: '텍스트박스 그룹' },
+  { type: 'checklist', label: '체크리스트 그룹' },
   { type: 'chipGroup', label: '칩/버튼 그리드' },
   { type: 'button', label: '단일 버튼' },
   { type: 'quickInput', label: '빠른 입력바' },
   { type: 'card', label: '컨텐츠 카드' },
   { type: 'header', label: '상단 네비바' },
-  { type: 'checklist', label: '체크리스트' },
   { type: 'input', label: '입력 폼' },
   { type: 'text', label: '텍스트' },
   { type: 'tabs', label: '탭 바' },
@@ -76,7 +76,7 @@ export const CustomComponentForm: React.FC<CustomComponentFormProps> = ({
         </div>
       </div>
 
-      {compType === 'colorBlock' && (
+      {(compType === 'colorBlock' || compType === 'textGroup' || compType === 'checklist') && (
         <div>
           <label className="font-bold text-slate-700 block mb-1">상단 바 포인트 컬러</label>
           <div className="flex items-center gap-2">
@@ -110,7 +110,7 @@ export const CustomComponentForm: React.FC<CustomComponentFormProps> = ({
         </div>
       )}
 
-      {(compType === 'chipGroup' || compType === 'checklist' || compType === 'tabs') && (
+      {(compType === 'textGroup' || compType === 'chipGroup' || compType === 'checklist' || compType === 'tabs') && (
         <div>
           <label className="font-bold text-slate-700 block mb-1">하위 아이템 목록 (한 줄에 하나씩)</label>
           <textarea

@@ -17,6 +17,7 @@ export type ComponentType =
   | 'chipGroup'
   | 'categoryList'
   | 'checklist'
+  | 'textGroup'
   | 'quickInput';
 
 export type ActionType = 'navigate' | 'openModal' | 'toast' | 'none';
@@ -39,6 +40,7 @@ export interface ComponentItem {
   content?: string;
   imageUrl?: string;
   items?: string[]; // 탭, 리스트, 칩, 체크리스트용
+  checkedItems?: boolean[]; // 체크리스트 항목별 체크 여부
   headerColor?: string; // 컬러 블록 상단 바 색상 (보라, 초록 등)
   columns?: number; // 칩 메뉴나 그리드의 열(컬럼) 개수
   rows?: number; // 칩 메뉴나 그리드의 행(로우) 개수
