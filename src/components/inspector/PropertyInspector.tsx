@@ -3,7 +3,7 @@ import { useCanvasStore } from '../../store/canvasStore';
 import { useCustomComponentStore } from '../../store/customComponentStore';
 import { usePaletteStore } from '../../store/paletteStore';
 import { PALETTE_ITEMS } from '../palette/paletteData';
-import { Trash2, Sliders, BookmarkPlus, Plus, Terminal, Eye } from 'lucide-react';
+import { Trash2, Sliders, BookmarkPlus, Plus, Terminal } from 'lucide-react';
 import { CustomComponentModal } from '../palette/CustomComponentModal';
 import { VibePromptSection } from './VibePromptSection';
 import { ComponentConfigSection } from './ComponentConfigSection';
@@ -99,23 +99,12 @@ export const PropertyInspector: React.FC = () => {
           {activeTab === 'settings' ? (
             <div className="space-y-3">
               {/* 실제 배치될 컴포넌트 실물 라이브 렌더링 */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between pb-1 border-b border-slate-200">
-                  <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
-                    <Eye className="w-3.5 h-3.5 text-blue-600" />
-                    실제 배치 컴포넌트 실물
-                  </span>
-                  <span className="text-[10px] text-blue-600 font-semibold bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
-                    미리보기
-                  </span>
-                </div>
-                <div className="p-2 bg-slate-100/80 border border-slate-200 rounded-lg shadow-inner">
-                  <CanvasItemRenderer
-                    component={previewComponent}
-                    isSelected={false}
-                    onSelect={() => {}}
-                  />
-                </div>
+              <div className="p-2 bg-slate-100/80 border border-slate-200 rounded-lg shadow-inner">
+                <CanvasItemRenderer
+                  component={previewComponent}
+                  isSelected={false}
+                  onSelect={() => {}}
+                />
               </div>
 
               {/* 기본 스펙 및 설명 */}
@@ -217,23 +206,12 @@ export const PropertyInspector: React.FC = () => {
         {activeTab === 'settings' ? (
           <div className="space-y-3.5">
             {/* 실제 배치된 컴포넌트 실물 라이브 렌더링 */}
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between pb-1 border-b border-slate-200">
-                <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
-                  <Eye className="w-3.5 h-3.5 text-blue-600" />
-                  실제 배치 컴포넌트 실물
-                </span>
-                <span className="text-[10px] text-blue-600 font-semibold bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
-                  라이브 실시간 연동
-                </span>
-              </div>
-              <div className="p-2.5 bg-slate-100/80 border border-slate-200 rounded-lg shadow-inner">
-                <CanvasItemRenderer
-                  component={selectedComponent}
-                  isSelected={false}
-                  onSelect={() => {}}
-                />
-              </div>
+            <div className="p-2.5 bg-slate-100/80 border border-slate-200 rounded-lg shadow-inner">
+              <CanvasItemRenderer
+                component={selectedComponent}
+                isSelected={false}
+                onSelect={() => {}}
+              />
             </div>
 
             {/* 컴포넌트 커스텀 설정 컨트롤 */}
