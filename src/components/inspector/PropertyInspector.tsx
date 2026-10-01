@@ -3,10 +3,11 @@ import { useCanvasStore } from '../../store/canvasStore';
 import { useCustomComponentStore } from '../../store/customComponentStore';
 import { usePaletteStore } from '../../store/paletteStore';
 import { PALETTE_ITEMS } from '../palette/paletteData';
-import { Trash2, Sliders, BookmarkPlus, Plus, Terminal } from 'lucide-react';
+import { Trash2, Sliders, BookmarkPlus, Plus, Terminal, Eye } from 'lucide-react';
 import { CustomComponentModal } from '../palette/CustomComponentModal';
 import { VibePromptSection } from './VibePromptSection';
 import { ComponentConfigSection } from './ComponentConfigSection';
+import { CanvasItemRenderer } from '../canvas/CanvasItemRenderer';
 import { ComponentItem } from '../../types/builder';
 
 export const PropertyInspector: React.FC = () => {
@@ -97,7 +98,28 @@ export const PropertyInspector: React.FC = () => {
         <div className="flex-1 overflow-y-auto p-3 min-h-0">
           {activeTab === 'settings' ? (
             <div className="space-y-3">
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded text-xs space-y-2">
+              {/* 실제 배치될 컴포넌트 실물 라이브 렌더링 */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between pb-1 border-b border-slate-200">
+                  <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+                    <Eye className="w-3.5 h-3.5 text-blue-600" />
+                    실제 배치 컴포넌트 실물
+                  </span>
+                  <span className="text-[10px] text-blue-600 font-semibold bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
+                    미리보기
+                  </span>
+                </div>
+                <div className="p-2 bg-slate-100/80 border border-slate-200 rounded-lg shadow-inner">
+                  <CanvasItemRenderer
+                    component={previewComponent}
+                    isSelected={false}
+                    onSelect={() => {}}
+                  />
+                </div>
+              </div>
+
+              {/* 기본 스펙 및 설명 */}
+              <div className="p-2.5 bg-slate-50 border border-slate-200 rounded text-xs space-y-1.5">
                 <div>
                   <span className="text-[11px] font-semibold text-slate-500 block mb-0.5">컴포넌트 설명</span>
                   <p className="text-xs text-slate-700 leading-relaxed">{paletteItem.description}</p>
@@ -108,23 +130,15 @@ export const PropertyInspector: React.FC = () => {
                     <span className="text-xs text-slate-800 font-bold">{paletteItem.defaultData.label}</span>
                   </div>
                 )}
-                {paletteItem.defaultData.headerColor && (
-                  <div className="flex items-center gap-2 pt-1">
-                    <span className="text-[11px] font-semibold text-slate-500">기본 테마 색상:</span>
-                    <div
-                      className="w-4 h-4 rounded border border-slate-300"
-                      style={{ backgroundColor: paletteItem.defaultData.headerColor }}
-                    />
-                    <span className="text-[11px] font-mono text-slate-600">{paletteItem.defaultData.headerColor}</span>
-                  </div>
-                )}
               </div>
-              <div className="p-3 border border-dashed border-blue-200 rounded bg-blue-50/30 text-center">
-                <p className="text-xs text-blue-700 font-medium mb-2">상단의 [배치] 버튼을 누르면 캔버스에 추가됩니다.</p>
+
+              {/* 캔버스 배치 액션 카드 */}
+              <div className="p-3 border border-dashed border-blue-300 rounded-lg bg-blue-50/40 text-center">
+                <p className="text-xs text-blue-800 font-medium mb-2">이 컴포넌트를 캔버스 패널에 배치합니다.</p>
                 <button
                   type="button"
                   onClick={() => addComponent(paletteItem.defaultData)}
-                  className="w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-xs"
+                  className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-xs"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>캔버스에 컴포넌트 배치</span>
@@ -201,7 +215,35 @@ export const PropertyInspector: React.FC = () => {
       {/* 3. 탭 본문 영역 */}
       <div className="flex-1 overflow-y-auto p-3 min-h-0">
         {activeTab === 'settings' ? (
-          <ComponentConfigSection component={selectedComponent} onUpdate={handleUpdate} />
+          <div className="space-y-3.5">
+            {/* 실제 배치된 컴포넌트 실물 라이브 렌더링 */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between pb-1 border-b border-slate-200">
+                <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+                  <Eye className="w-3.5 h-3.5 text-blue-600" />
+                  실제 배치 컴포넌트 실물
+                </span>
+                <span className="text-[10px] text-blue-600 font-semibold bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
+                  라이브 실시간 연동
+                </span>
+              </div>
+              <div className="p-2.5 bg-slate-100/80 border border-slate-200 rounded-lg shadow-inner">
+                <CanvasItemRenderer
+                  component={selectedComponent}
+                  isSelected={false}
+                  onSelect={() => {}}
+                />
+              </div>
+            </div>
+
+            {/* 컴포넌트 커스텀 설정 컨트롤 */}
+            <div className="pt-1 border-t border-slate-100">
+              <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
+                컴포넌트 커스텀 설정
+              </div>
+              <ComponentConfigSection component={selectedComponent} onUpdate={handleUpdate} />
+            </div>
+          </div>
         ) : (
           <div className="h-full flex flex-col min-h-0">
             <VibePromptSection component={selectedComponent} onUpdate={handleUpdate} />
