@@ -112,7 +112,7 @@ export const GroupBlockRenderer: React.FC<GroupBlockRendererProps> = ({
         onClick={() => {
           if (!isEditingTitle) setIsOpen(!isOpen);
         }}
-        className="px-2 py-1.5 text-white flex items-center justify-between text-xs font-semibold relative cursor-pointer select-none"
+        className="pl-2 pr-0.5 py-1.5 text-white flex items-center justify-between text-xs font-semibold relative cursor-pointer select-none"
         style={{ backgroundColor: headerBg }}
       >
         <div className="flex items-center gap-1.5 flex-1 min-w-0">
@@ -152,8 +152,8 @@ export const GroupBlockRenderer: React.FC<GroupBlockRendererProps> = ({
           )}
         </div>
 
-        {/* 헤더 우측 버튼: 추가 & 3점 메뉴 */}
-        <div className="flex items-center gap-0.5 shrink-0" onClick={(e) => e.stopPropagation()}>
+        {/* 헤더 우측 버튼: 추가 & 가장 우측 끝 최소 여백 3점 메뉴 */}
+        <div className="flex items-center gap-0.5 shrink-0 ml-auto mr-0" onClick={(e) => e.stopPropagation()}>
           <button
             type="button"
             onClick={handleAddItem}
@@ -166,7 +166,7 @@ export const GroupBlockRenderer: React.FC<GroupBlockRendererProps> = ({
             <button
               type="button"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="p-1 hover:bg-black/15 rounded transition"
+              className="p-0.5 hover:bg-black/15 rounded transition"
               title="메뉴"
             >
               <MoreVertical className="w-3.5 h-3.5" />

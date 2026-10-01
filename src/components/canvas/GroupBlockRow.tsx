@@ -62,7 +62,7 @@ export const GroupBlockRow: React.FC<GroupBlockRowProps> = ({
       onDragStart={() => onDragStart(idx)}
       onDragOver={onDragOver}
       onDrop={() => onDrop(idx)}
-      className={`flex items-start justify-between px-2 py-1.5 hover:bg-slate-50 transition group relative ${
+      className={`flex items-start justify-between pl-2 pr-0.5 py-1.5 hover:bg-slate-50 transition group relative ${
         draggedIndex === idx ? 'opacity-40 bg-blue-50' : ''
       }`}
     >
@@ -88,7 +88,7 @@ export const GroupBlockRow: React.FC<GroupBlockRowProps> = ({
         />
       </div>
 
-      {/* 편집 중일 때는 [완료] 버튼, 평상시에는 [⋮] 3점 메뉴 */}
+      {/* 편집 중일 때는 [완료] 버튼, 평상시에는 가장 우측 끝 최소 여백 [⋮] 3점 메뉴 */}
       {isEditing ? (
         <button
           type="button"
@@ -96,16 +96,16 @@ export const GroupBlockRow: React.FC<GroupBlockRowProps> = ({
             e.stopPropagation();
             setIsEditing(false);
           }}
-          className="px-2 py-0.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-[11px] font-bold shrink-0 ml-1.5 mt-0.5 shadow-xs"
+          className="px-2 py-0.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-[11px] font-bold shrink-0 ml-1 mt-0.5 shadow-xs"
         >
           완료
         </button>
       ) : (
-        <div className="relative shrink-0 ml-1.5 mt-0.5" onClick={(e) => e.stopPropagation()}>
+        <div className="relative shrink-0 ml-auto mr-0 mt-0.5" onClick={(e) => e.stopPropagation()}>
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition"
+            className="p-0.5 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition"
             title="블록 메뉴"
           >
             <MoreVertical className="w-3.5 h-3.5" />

@@ -48,7 +48,7 @@ export const DEFAULT_COMMON_PROMPTS: CommonPromptItem[] = [
     description: '각 항목 우측 [⋮] 메뉴를 통한 일관된 수정, 삭제, 취소 액션 드롭다운',
     iconName: 'menu',
     promptText: `[3점 메뉴([⋮]) 액션 규격]:
-1. 각 리스트 항목 우측 끝에 [⋮] 3점 메뉴(MoreVertical) 버튼을 배치할 것.
+1. [배치 위치]: 헤더 및 각 리스트 항목 라인의 가장 우측 끝에 최소의 여백(Right-aligned with minimal margin/padding)만을 가지도록 밀착 배치할 것.
 2. 3점 메뉴 클릭 시 드롭다운 팝업 노출:
    * [수정]: 해당 항목의 인라인 텍스트 편집 활성화
    * [삭제]: 삭제 확인 팝오버 트리거 또는 삭제 실행
