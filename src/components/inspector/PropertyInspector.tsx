@@ -1,25 +1,89 @@
 import React, { useState } from 'react';
 import { useCanvasStore } from '../../store/canvasStore';
 import { useCustomComponentStore } from '../../store/customComponentStore';
-import { Trash2, Sliders, BookmarkPlus } from 'lucide-react';
+import { usePaletteStore } from '../../store/paletteStore';
+import { PALETTE_ITEMS } from '../palette/paletteData';
+import { Trash2, Sliders, BookmarkPlus, Plus } from 'lucide-react';
 import { CustomComponentModal } from '../palette/CustomComponentModal';
 import { VibePromptSection } from './VibePromptSection';
+import { ComponentItem } from '../../types/builder';
 
 export const PropertyInspector: React.FC = () => {
-  const { screens, activeScreenId, selectedComponentId, updateComponent, deleteComponent } = useCanvasStore();
+  const { screens, activeScreenId, selectedComponentId, updateComponent, deleteComponent, addComponent } = useCanvasStore();
+  const { selectedPaletteTitle } = usePaletteStore();
   const { addPreset } = useCustomComponentStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const currentScreen = screens.find((s) => s.id === activeScreenId);
   const allComponents = currentScreen?.panels.flatMap((p) => p.components) || [];
   const selectedComponent = allComponents.find((c) => c.id === selectedComponentId);
+  const paletteItem = PALETTE_ITEMS.find((it) => it.title === selectedPaletteTitle);
 
+  // 1. 캔버스에서 선택된 컴포넌트가 없을 때
   if (!selectedComponent) {
+    // 1-1. 도구함에서도 선택된 아이템이 없는 경우
+    if (!paletteItem) {
+      return (
+        <div className="flex-1 flex flex-col items-center justify-center p-6 text-center text-slate-500">
+          <Sliders className="w-8 h-8 mb-2 opacity-50" />
+          <p className="text-xs font-semibold">선택된 컴포넌트가 없습니다.</p>
+          <p className="text-[11px] text-slate-600 mt-1">
+            1번 패널에서 컴포넌트를 클릭해 설정을 확인하거나,<br />
+            캔버스에서 컴포넌트를 클릭해 편집하세요.
+          </p>
+        </div>
+      );
+    }
+
+    // 1-2. 도구함 컴포넌트 설정 미리보기 모드
+    const previewComponent: ComponentItem = {
+      ...(paletteItem.defaultData as any),
+      id: 'palette-preview',
+    };
+
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center text-slate-500">
-        <Sliders className="w-8 h-8 mb-2 opacity-50" />
-        <p className="text-xs">선택된 컴포넌트가 없습니다.</p>
-        <p className="text-[11px] text-slate-600 mt-1">캔버스에서 컴포넌트를 클릭해 편집하세요.</p>
+      <div className="h-full flex flex-col p-3 space-y-2.5 overflow-hidden bg-white">
+        {/* 상단 헤더: 도구함 미리보기 배지 + 컴포넌트명 + 캔버스 추가 버튼 */}
+        <div className="flex items-center justify-between pb-2 border-b border-slate-200 shrink-0">
+          <div className="flex items-center gap-1.5 truncate flex-1 mr-2">
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 font-bold shrink-0">
+              도구함 미리보기
+            </span>
+            <h3 className="text-xs font-bold text-slate-800 truncate" title={paletteItem.title}>
+              {paletteItem.title}
+            </h3>
+          </div>
+          <button
+            onClick={() => addComponent(paletteItem.defaultData)}
+            className="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1 transition shadow-xs shrink-0"
+            title="선택된 패널에 컴포넌트 추가 (+)"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>배치</span>
+          </button>
+        </div>
+
+        {/* 컴포넌트 기본 설명 */}
+        <div className="p-2 bg-slate-50 border border-slate-200 rounded text-xs space-y-1 shrink-0">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] text-slate-500 font-semibold">설명:</span>
+            <span className="text-[11px] text-slate-700 font-medium">{paletteItem.description}</span>
+          </div>
+          {paletteItem.defaultData.label && (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] text-slate-500 font-semibold">기본 라벨:</span>
+              <span className="text-[11px] text-slate-800 font-bold">{paletteItem.defaultData.label}</span>
+            </div>
+          )}
+        </div>
+
+        {/* 바이브코딩 프롬프트 규격 */}
+        <div className="flex-1 flex flex-col min-h-0">
+          <VibePromptSection
+            component={previewComponent}
+            onUpdate={() => {}}
+          />
+        </div>
       </div>
     );
   }

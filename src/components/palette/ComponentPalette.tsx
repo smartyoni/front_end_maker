@@ -8,8 +8,9 @@ import {
 import { Plus } from 'lucide-react';
 
 export const ComponentPalette: React.FC = () => {
-  const { addComponent } = useCanvasStore();
-  const { getOrderedItems, reorderItems } = usePaletteStore();
+  const { addComponent, selectComponent } = useCanvasStore();
+  const { getOrderedItems, reorderItems, selectedPaletteTitle, selectPaletteItem } =
+    usePaletteStore();
   
   const [selectedCategory, setSelectedCategory] = useState<PaletteCategory>('all');
   const [draggedTitle, setDraggedTitle] = useState<string | null>(null);
@@ -82,6 +83,7 @@ export const ComponentPalette: React.FC = () => {
               {filteredItems.map((item) => {
                 const isDragging = draggedTitle === item.title;
                 const isDragOver = dragOverTitle === item.title && !isDragging;
+                const isSelected = selectedPaletteTitle === item.title;
 
                 return (
                   <div
@@ -91,21 +93,26 @@ export const ComponentPalette: React.FC = () => {
                     onDragOver={(e) => handleDragOver(item.title, e)}
                     onDrop={() => handleDrop(item.title)}
                     onDragEnd={handleDragEnd}
-                    onClick={() => addComponent(item.defaultData)}
+                    onClick={() => {
+                      selectComponent(null);
+                      selectPaletteItem(item.title);
+                    }}
                     className={`w-full flex items-center justify-between px-2.5 py-1.5 bg-white border cursor-pointer select-none transition group ${
                       isDragging
                         ? 'opacity-30 border-dashed border-blue-500 bg-blue-50/40'
                         : isDragOver
                         ? 'border-blue-500 ring-2 ring-blue-400 ring-offset-1 bg-blue-50/20'
-                        : 'border-slate-200 hover:border-blue-400 hover:bg-blue-50/30'
+                        : isSelected
+                        ? 'border-blue-600 bg-blue-50/60 shadow-xs ring-1 ring-blue-500/30'
+                        : 'border-slate-200 hover:border-blue-400 hover:bg-slate-50'
                     }`}
-                    title="클릭: 캔버스에 추가 / 드래그: 순서 이동"
+                    title="클릭: 2번 패널에서 설정 확인 / 드래그: 순서 이동"
                   >
-                    <div className="flex items-center gap-2 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
                       <div className="p-1 border border-slate-200 bg-slate-50 group-hover:bg-white transition shrink-0">
                         {item.icon}
                       </div>
-                      <div className="min-w-0">
+                      <div className="min-w-0 flex-1">
                         <span className="text-xs font-bold text-slate-800 block truncate leading-tight">
                           {item.title}
                         </span>
@@ -114,9 +121,17 @@ export const ComponentPalette: React.FC = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5 text-blue-600 shrink-0">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addComponent(item.defaultData);
+                      }}
+                      className="p-1 rounded text-blue-600 hover:bg-blue-600 hover:text-white bg-blue-50 border border-blue-200 transition shrink-0 ml-1.5 shadow-2xs"
+                      title="선택된 패널에 컴포넌트 추가 (+)"
+                    >
                       <Plus className="w-3.5 h-3.5" />
-                    </div>
+                    </button>
                   </div>
                 );
               })}

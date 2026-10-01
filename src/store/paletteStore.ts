@@ -4,6 +4,8 @@ import { PALETTE_ITEMS, PaletteCategory, PaletteItemDef } from '../components/pa
 
 interface PaletteStore {
   orderedTitles: string[];
+  selectedPaletteTitle: string | null;
+  selectPaletteItem: (title: string | null) => void;
   reorderItems: (sourceTitle: string, targetTitle: string) => void;
   resetOrder: () => void;
   getOrderedItems: (category: PaletteCategory) => PaletteItemDef[];
@@ -13,6 +15,9 @@ export const usePaletteStore = create<PaletteStore>()(
   persist(
     (set, get) => ({
       orderedTitles: PALETTE_ITEMS.map((item) => item.title),
+      selectedPaletteTitle: null,
+
+      selectPaletteItem: (title) => set({ selectedPaletteTitle: title }),
 
       reorderItems: (sourceTitle: string, targetTitle: string) => {
         if (sourceTitle === targetTitle) return;
