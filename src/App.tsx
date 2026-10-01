@@ -13,16 +13,16 @@ export function App() {
       {/* 상단 툴바 */}
       <TopBar onOpenExport={() => setIsExportOpen(true)} />
 
-      {/* 3단 워크스페이스 레이아웃 */}
+      {/* 워크스페이스 레이아웃 (1번: 도구함, 2번: 설정창, 3~5번: 캔버스 패널) */}
       <div className="flex flex-1 overflow-hidden">
-        {/* 좌측: 컴포넌트 도구함 & 레이어 트리 */}
+        {/* 1번 패널: 컴포넌트 도구함 & 공통설정 */}
         <LeftSidebar />
 
-        {/* 중앙: 인터랙티브 캔버스 뷰포트 */}
-        <CanvasArea />
-
-        {/* 우측: 속성 & 액션 인스펙터 */}
+        {/* 2번 패널: 속성 & 액션 인스펙터 (설정창) */}
         <RightSidebar />
+
+        {/* 3, 4, 5번 패널: 인터랙티브 캔버스 뷰포트 */}
+        <CanvasArea />
       </div>
 
       {/* 코드 내보내기 모달 */}

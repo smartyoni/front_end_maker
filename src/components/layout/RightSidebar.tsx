@@ -7,7 +7,7 @@ export const RightSidebar: React.FC = () => {
   const { activeLeftTab } = useGlobalSettingsStore();
 
   return (
-    <aside className="w-80 bg-white border-l border-slate-200 flex flex-col h-full shrink-0 z-10 shadow-sm overflow-hidden">
+    <aside className="w-80 bg-white border-r border-slate-200 flex flex-col h-full shrink-0 z-10 shadow-sm overflow-hidden">
       {activeLeftTab === 'settings' ? <GlobalPromptInspector /> : <PropertyInspector />}
     </aside>
   );

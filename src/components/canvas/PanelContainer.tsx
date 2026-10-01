@@ -47,7 +47,7 @@ export const PanelContainer: React.FC<PanelContainerProps> = ({ panel, index }) 
           <div className="flex items-center gap-1.5 truncate">
             <Columns className="w-3.5 h-3.5 shrink-0 opacity-80" />
             <span className="truncate">
-              패널 {index + 1}: {panel.title}
+              패널 {index + 3}: {panel.title}
             </span>
           </div>
 

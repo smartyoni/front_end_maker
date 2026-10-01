@@ -77,7 +77,7 @@ export const CommonSettingsTab: React.FC = () => {
       <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between pb-1 border-b border-slate-200">
         <span>공통 프롬프트 규격 ({promptItems.length})</span>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] text-slate-400 font-normal">클릭: 5번 패널 편집</span>
+          <span className="text-[10px] text-slate-400 font-normal">클릭: 2번 패널 편집</span>
           <button
             onClick={() => {
               if (confirm('모든 공통 프롬프트를 기본 추천 규격으로 초기화하시겠습니까?')) {
@@ -117,7 +117,7 @@ export const CommonSettingsTab: React.FC = () => {
                   ? 'border-blue-600 bg-blue-50/40 shadow-xs ring-1 ring-blue-500/30'
                   : 'border-slate-200 hover:border-blue-400 hover:bg-slate-50'
               }`}
-              title="클릭: 5번 패널에서 프롬프트 확인 및 편집 / 드래그: 순서 이동"
+              title="클릭: 2번 패널에서 프롬프트 확인 및 편집 / 드래그: 순서 이동"
             >
               <div className="flex items-center gap-2 min-w-0 flex-1 mr-1">
                 <div
