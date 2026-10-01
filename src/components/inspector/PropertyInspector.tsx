@@ -3,9 +3,10 @@ import { useCanvasStore } from '../../store/canvasStore';
 import { useCustomComponentStore } from '../../store/customComponentStore';
 import { usePaletteStore } from '../../store/paletteStore';
 import { PALETTE_ITEMS } from '../palette/paletteData';
-import { Trash2, Sliders, BookmarkPlus, Plus } from 'lucide-react';
+import { Trash2, Sliders, BookmarkPlus, Plus, Terminal } from 'lucide-react';
 import { CustomComponentModal } from '../palette/CustomComponentModal';
 import { VibePromptSection } from './VibePromptSection';
+import { ComponentConfigSection } from './ComponentConfigSection';
 import { ComponentItem } from '../../types/builder';
 
 export const PropertyInspector: React.FC = () => {
@@ -13,6 +14,7 @@ export const PropertyInspector: React.FC = () => {
   const { selectedPaletteTitle } = usePaletteStore();
   const { addPreset } = useCustomComponentStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'settings' | 'prompt'>('settings');
 
   const currentScreen = screens.find((s) => s.id === activeScreenId);
   const allComponents = currentScreen?.panels.flatMap((p) => p.components) || [];
@@ -42,9 +44,9 @@ export const PropertyInspector: React.FC = () => {
     };
 
     return (
-      <div className="h-full flex flex-col p-3 space-y-2.5 overflow-hidden bg-white">
-        {/* 상단 헤더: 도구함 미리보기 배지 + 컴포넌트명 + 캔버스 추가 버튼 */}
-        <div className="flex items-center justify-between pb-2 border-b border-slate-200 shrink-0">
+      <div className="h-full flex flex-col overflow-hidden bg-white">
+        {/* 상단 타이틀 바: 도구함 미리보기 배지 + 컴포넌트명 + 캔버스 배치 버튼 */}
+        <div className="p-3 pb-2 flex items-center justify-between border-b border-slate-200 shrink-0">
           <div className="flex items-center gap-1.5 truncate flex-1 mr-2">
             <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 font-bold shrink-0">
               도구함 미리보기
@@ -63,26 +65,77 @@ export const PropertyInspector: React.FC = () => {
           </button>
         </div>
 
-        {/* 컴포넌트 기본 설명 */}
-        <div className="p-2 bg-slate-50 border border-slate-200 rounded text-xs space-y-1 shrink-0">
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] text-slate-500 font-semibold">설명:</span>
-            <span className="text-[11px] text-slate-700 font-medium">{paletteItem.description}</span>
-          </div>
-          {paletteItem.defaultData.label && (
-            <div className="flex items-center gap-1.5">
-              <span className="text-[11px] text-slate-500 font-semibold">기본 라벨:</span>
-              <span className="text-[11px] text-slate-800 font-bold">{paletteItem.defaultData.label}</span>
-            </div>
-          )}
+        {/* 탭 헤더: [설정] vs [프롬프트] */}
+        <div className="flex border-b border-slate-200 bg-slate-50/50 shrink-0">
+          <button
+            type="button"
+            onClick={() => setActiveTab('settings')}
+            className={`flex-1 py-2 text-xs font-bold border-b-2 flex items-center justify-center gap-1.5 transition ${
+              activeTab === 'settings'
+                ? 'border-blue-600 text-blue-600 bg-white'
+                : 'border-transparent text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            <Sliders className="w-3.5 h-3.5" />
+            <span>설정</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('prompt')}
+            className={`flex-1 py-2 text-xs font-bold border-b-2 flex items-center justify-center gap-1.5 transition ${
+              activeTab === 'prompt'
+                ? 'border-blue-600 text-blue-600 bg-white'
+                : 'border-transparent text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            <Terminal className="w-3.5 h-3.5 text-blue-600" />
+            <span>프롬프트</span>
+          </button>
         </div>
 
-        {/* 바이브코딩 프롬프트 규격 */}
-        <div className="flex-1 flex flex-col min-h-0">
-          <VibePromptSection
-            component={previewComponent}
-            onUpdate={() => {}}
-          />
+        {/* 탭 본문 영역 */}
+        <div className="flex-1 overflow-y-auto p-3 min-h-0">
+          {activeTab === 'settings' ? (
+            <div className="space-y-3">
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded text-xs space-y-2">
+                <div>
+                  <span className="text-[11px] font-semibold text-slate-500 block mb-0.5">컴포넌트 설명</span>
+                  <p className="text-xs text-slate-700 leading-relaxed">{paletteItem.description}</p>
+                </div>
+                {paletteItem.defaultData.label && (
+                  <div>
+                    <span className="text-[11px] font-semibold text-slate-500 block mb-0.5">기본 라벨</span>
+                    <span className="text-xs text-slate-800 font-bold">{paletteItem.defaultData.label}</span>
+                  </div>
+                )}
+                {paletteItem.defaultData.headerColor && (
+                  <div className="flex items-center gap-2 pt-1">
+                    <span className="text-[11px] font-semibold text-slate-500">기본 테마 색상:</span>
+                    <div
+                      className="w-4 h-4 rounded border border-slate-300"
+                      style={{ backgroundColor: paletteItem.defaultData.headerColor }}
+                    />
+                    <span className="text-[11px] font-mono text-slate-600">{paletteItem.defaultData.headerColor}</span>
+                  </div>
+                )}
+              </div>
+              <div className="p-3 border border-dashed border-blue-200 rounded bg-blue-50/30 text-center">
+                <p className="text-xs text-blue-700 font-medium mb-2">상단의 [배치] 버튼을 누르면 캔버스에 추가됩니다.</p>
+                <button
+                  type="button"
+                  onClick={() => addComponent(paletteItem.defaultData)}
+                  className="w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-xs"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>캔버스에 컴포넌트 배치</span>
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="h-full flex flex-col min-h-0">
+              <VibePromptSection component={previewComponent} onUpdate={() => {}} />
+            </div>
+          )}
         </div>
       </div>
     );
@@ -93,9 +146,9 @@ export const PropertyInspector: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex flex-col p-3 space-y-2.5 overflow-hidden bg-white">
-      {/* 1. 최상단 헤더: 영문 태그 제거, 컴포넌트 타이틀 배치, 높이 최적화 */}
-      <div className="flex items-center justify-between pb-2 border-b border-slate-200 shrink-0">
+    <div className="h-full flex flex-col overflow-hidden bg-white">
+      {/* 1. 최상단 타이틀 헤더 */}
+      <div className="p-3 pb-2 flex items-center justify-between border-b border-slate-200 shrink-0">
         <h3 className="text-xs font-bold text-slate-800 truncate flex-1 mr-2" title={selectedComponent.name || selectedComponent.label}>
           {selectedComponent.name || selectedComponent.label || '컴포넌트'}
         </h3>
@@ -117,109 +170,44 @@ export const PropertyInspector: React.FC = () => {
         </div>
       </div>
 
-      {/* 2. 컴포넌트 핵심 컨트롤 영역 (상단 타이틀바 색상 라벨 제거, 라벨/텍스트 라벨 제거) */}
-      <div className="space-y-2 shrink-0">
-        {/* 상단 타이틀바 색상 선택기 (라벨 제거) */}
-        {selectedComponent.headerColor !== undefined && (
-          <div className="flex items-center gap-2">
-            <input
-              type="color"
-              value={selectedComponent.headerColor || '#5ea578'}
-              onChange={(e) => handleUpdate({ headerColor: e.target.value })}
-              className="w-7 h-7 rounded border border-slate-300 bg-transparent cursor-pointer shrink-0"
-              title="상단 바 색상 선택"
-            />
-            <input
-              type="text"
-              value={selectedComponent.headerColor || ''}
-              onChange={(e) => handleUpdate({ headerColor: e.target.value })}
-              placeholder="#5ea578"
-              className="flex-1 px-2 py-1 bg-slate-50 border border-slate-300 rounded text-xs font-mono text-slate-700 outline-none"
-            />
-          </div>
-        )}
-
-        {/* 라벨 텍스트 입력 (라벨 제거, 플레이스홀더: '라벨을 정하세요') */}
-        {selectedComponent.label !== undefined && (
-          <div>
-            <input
-              type="text"
-              value={selectedComponent.label}
-              placeholder="라벨을 정하세요"
-              onChange={(e) => handleUpdate({ label: e.target.value })}
-              className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-xs text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition"
-            />
-          </div>
-        )}
-
-        {/* 네비게이션 탭일 경우 행/열 및 탭 관리 */}
-        {selectedComponent.type === 'chipGroup' && (
-          <div className="space-y-2 p-2 bg-slate-50 border border-slate-200 rounded">
-            <div className="flex items-center justify-between text-[11px] text-slate-600">
-              <span className="font-semibold">열 개수</span>
-              <div className="flex gap-1">
-                {[2, 3, 4, 5, 6].map((col) => (
-                  <button
-                    key={col}
-                    onClick={() => {
-                      const currentRows = selectedComponent.rows || 2;
-                      const total = currentRows * col;
-                      const oldItems = selectedComponent.items || [];
-                      const newItems = Array.from({ length: total }, (_, i) => oldItems[i] || `탭 ${i + 1}`);
-                      handleUpdate({ columns: col, rows: currentRows, items: newItems });
-                    }}
-                    className={`px-1.5 py-0.5 rounded text-[10px] font-bold border ${
-                      (selectedComponent.columns || 4) === col
-                        ? 'bg-blue-600 text-white border-blue-600'
-                        : 'bg-white border-slate-300 text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    {col}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="flex items-center justify-between text-[11px] text-slate-600">
-              <span className="font-semibold">행 개수</span>
-              <div className="flex gap-1">
-                {[1, 2, 3, 4].map((r) => (
-                  <button
-                    key={r}
-                    onClick={() => {
-                      const currentCols = selectedComponent.columns || 4;
-                      const total = r * currentCols;
-                      const oldItems = selectedComponent.items || [];
-                      const newItems = Array.from({ length: total }, (_, i) => oldItems[i] || `탭 ${i + 1}`);
-                      handleUpdate({ columns: currentCols, rows: r, items: newItems });
-                    }}
-                    className={`px-1.5 py-0.5 rounded text-[10px] font-bold border ${
-                      (selectedComponent.rows || 2) === r
-                        ? 'bg-blue-600 text-white border-blue-600'
-                        : 'bg-white border-slate-300 text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    {r}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 메모용 텍스트박스 */}
-        <div>
-          <textarea
-            rows={2}
-            value={selectedComponent.functionNote || ''}
-            onChange={(e) => handleUpdate({ functionNote: e.target.value })}
-            placeholder="메모를 입력하세요..."
-            className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white resize-none transition"
-          />
-        </div>
+      {/* 2. 탭 헤더: [설정] vs [프롬프트] */}
+      <div className="flex border-b border-slate-200 bg-slate-50/50 shrink-0">
+        <button
+          type="button"
+          onClick={() => setActiveTab('settings')}
+          className={`flex-1 py-2 text-xs font-bold border-b-2 flex items-center justify-center gap-1.5 transition ${
+            activeTab === 'settings'
+              ? 'border-blue-600 text-blue-600 bg-white'
+              : 'border-transparent text-slate-500 hover:text-slate-700'
+          }`}
+        >
+          <Sliders className="w-3.5 h-3.5" />
+          <span>설정</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('prompt')}
+          className={`flex-1 py-2 text-xs font-bold border-b-2 flex items-center justify-center gap-1.5 transition ${
+            activeTab === 'prompt'
+              ? 'border-blue-600 text-blue-600 bg-white'
+              : 'border-transparent text-slate-500 hover:text-slate-700'
+          }`}
+        >
+          <Terminal className="w-3.5 h-3.5 text-blue-600" />
+          <span>프롬프트</span>
+        </button>
       </div>
 
-      {/* 3. 남은 공간을 모두 프롬프트에 제공 (flex-1) */}
-      <VibePromptSection component={selectedComponent} onUpdate={handleUpdate} />
+      {/* 3. 탭 본문 영역 */}
+      <div className="flex-1 overflow-y-auto p-3 min-h-0">
+        {activeTab === 'settings' ? (
+          <ComponentConfigSection component={selectedComponent} onUpdate={handleUpdate} />
+        ) : (
+          <div className="h-full flex flex-col min-h-0">
+            <VibePromptSection component={selectedComponent} onUpdate={handleUpdate} />
+          </div>
+        )}
+      </div>
 
       {/* 내 컴포넌트 등록 모달 */}
       <CustomComponentModal
@@ -232,7 +220,7 @@ export const PropertyInspector: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         onSave={(presetData) => {
           addPreset(presetData);
-          alert(`'${presetData.name}' 컴포넌트가 1번 패널 [내 컴포넌트] 도구함에 등록되었습니다.`);
+          alert(`'${presetData.name}' 컴포넌트가 도구함에 등록되었습니다.`);
         }}
       />
     </div>
