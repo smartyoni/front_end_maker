@@ -16,6 +16,7 @@ export const PropertyInspector: React.FC = () => {
   const { addPreset } = useCustomComponentStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'settings' | 'prompt'>('settings');
+  const [previewNote, setPreviewNote] = useState('');
 
   const currentScreen = screens.find((s) => s.id === activeScreenId);
   const allComponents = currentScreen?.panels.flatMap((p) => p.components) || [];
@@ -57,7 +58,12 @@ export const PropertyInspector: React.FC = () => {
             </h3>
           </div>
           <button
-            onClick={() => addComponent(paletteItem.defaultData)}
+            onClick={() =>
+              addComponent({
+                ...paletteItem.defaultData,
+                functionNote: previewNote || paletteItem.defaultData.functionNote,
+              })
+            }
             className="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1 transition shadow-xs shrink-0"
             title="선택된 패널에 컴포넌트 추가 (+)"
           >
@@ -121,17 +127,19 @@ export const PropertyInspector: React.FC = () => {
                 )}
               </div>
 
-              {/* 캔버스 배치 액션 카드 */}
-              <div className="p-3 border border-dashed border-blue-300 rounded-lg bg-blue-50/40 text-center">
-                <p className="text-xs text-blue-800 font-medium mb-2">이 컴포넌트를 캔버스 패널에 배치합니다.</p>
-                <button
-                  type="button"
-                  onClick={() => addComponent(paletteItem.defaultData)}
-                  className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-xs"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>캔버스에 컴포넌트 배치</span>
-                </button>
+              {/* 줄바꿈이 지원되는 메모 및 전달사항 텍스트박스 */}
+              <div className="space-y-1.5 pt-1">
+                <div className="flex items-center justify-between">
+                  <label className="text-[11px] font-semibold text-slate-600">메모 및 요구사항</label>
+                  <span className="text-[10px] text-slate-400 font-normal">줄바꿈(Enter) 지원</span>
+                </div>
+                <textarea
+                  rows={4}
+                  value={previewNote}
+                  onChange={(e) => setPreviewNote(e.target.value)}
+                  placeholder="컴포넌트에 대한 동작 메모나 전달사항을 자유롭게 입력하세요... (줄바꿈 가능)"
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white resize-y transition shadow-2xs leading-relaxed"
+                />
               </div>
             </div>
           ) : (
