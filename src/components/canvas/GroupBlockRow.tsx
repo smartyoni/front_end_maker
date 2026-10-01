@@ -62,7 +62,7 @@ export const GroupBlockRow: React.FC<GroupBlockRowProps> = ({
       onDragStart={() => onDragStart(idx)}
       onDragOver={onDragOver}
       onDrop={() => onDrop(idx)}
-      className={`flex items-start justify-between pl-2 pr-0.5 py-1.5 hover:bg-slate-50 transition group relative ${
+      className={`flex items-start justify-between pl-2 pr-0 py-1.5 hover:bg-slate-50 transition group relative ${
         draggedIndex === idx ? 'opacity-40 bg-blue-50' : ''
       }`}
     >

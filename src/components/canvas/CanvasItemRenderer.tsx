@@ -167,12 +167,12 @@ function renderComponentContent(comp: ComponentItem) {
             {(comp.items || ['1', '2', '3']).map((item, idx) => (
               <div
                 key={idx}
-                className={`px-2 py-1 text-xs flex items-center justify-between hover:bg-slate-100 cursor-pointer ${
+                className={`pl-2 pr-0 py-1 text-xs flex items-center justify-between hover:bg-slate-100 cursor-pointer ${
                   idx === 0 ? 'bg-blue-50 text-blue-800 font-semibold' : 'text-slate-700'
                 }`}
               >
-                <span>› {item}</span>
-                <span className="text-[10px] text-slate-400">⋮</span>
+                <span className="truncate flex-1">› {item}</span>
+                <span className="text-xs text-slate-400 hover:text-slate-700 px-0.5 ml-auto shrink-0">⋮</span>
               </div>
             ))}
           </div>

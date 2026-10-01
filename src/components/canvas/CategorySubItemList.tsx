@@ -106,11 +106,11 @@ export const CategorySubItemList: React.FC<CategorySubItemListProps> = ({
                 onDragStart={() => setDraggedSubIndex(sIdx)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDrop(sIdx)}
-                className={`relative flex items-center justify-between px-2.5 py-1.5 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs text-slate-700 transition ${
+                className={`relative flex items-center justify-between pl-2 pr-0 py-1 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs text-slate-700 transition ${
                   isSubDragging ? 'opacity-40 border-dashed border-blue-400' : ''
                 }`}
               >
-                <div className="flex items-center gap-1.5 flex-1 min-w-0 mr-2">
+                <div className="flex items-center gap-1.5 flex-1 min-w-0 mr-1">
                   {editingSubIndex === sIdx ? (
                     <div className="flex items-center gap-1 flex-1" onClick={(e) => e.stopPropagation()}>
                       <input
@@ -144,15 +144,15 @@ export const CategorySubItemList: React.FC<CategorySubItemListProps> = ({
                   )}
                 </div>
 
-                {/* 우측 3점 메뉴 (수정, 삭제, 취소) */}
-                <div className="relative shrink-0">
+                {/* 우측 3점 메뉴: 가장 우측 끝 최소 여백 밀착 배치 */}
+                <div className="relative shrink-0 ml-auto mr-0">
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       setMenuOpenIndex(isMenuOpen ? null : sIdx);
                     }}
-                    className={`p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition ${
+                    className={`p-0.5 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition ${
                       isMenuOpen ? 'text-slate-800 bg-slate-200' : ''
                     }`}
                     title="항목 메뉴"

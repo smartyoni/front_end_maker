@@ -112,7 +112,7 @@ export const GroupBlockRenderer: React.FC<GroupBlockRendererProps> = ({
         onClick={() => {
           if (!isEditingTitle) setIsOpen(!isOpen);
         }}
-        className="pl-2 pr-0.5 py-1.5 text-white flex items-center justify-between text-xs font-semibold relative cursor-pointer select-none"
+        className="pl-2 pr-0 py-1.5 text-white flex items-center justify-between text-xs font-semibold relative cursor-pointer select-none"
         style={{ backgroundColor: headerBg }}
       >
         <div className="flex items-center gap-1.5 flex-1 min-w-0">
